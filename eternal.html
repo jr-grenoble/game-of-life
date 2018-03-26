@@ -1,0 +1,75 @@
+<html> <!--
+        Use the bash script launch-eternal-in-browser to launch the apache server and the game
+        http://192.168.0.48/~jeanrenebouvier/eternal/eternal.html ou http://localhost/~jeanrenebouvier/eternal/eternal.html
+        -->
+    <head>
+        <meta charset="utf-8" />
+        <title>Eternal Life ⓒ Facts Haven SAS - JR Bouvier</title>
+        <link rel="icon" type="image/png" href="./images/factshaven.png">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link type="text/css" rel="stylesheet" href="./styles/eternal-layout.css">
+        <link type="text/css" rel="stylesheet" href="./styles/eternal-style.css">
+        <!-- scripts are located at the end of the body -->
+    </head>
+    <body>
+        <nav id="menubar">
+            <i class="material-icons">menu</i> Menubar will go here eventually
+        </nav>
+        <section id="main">
+            <fieldset id="game" title="game area">
+                <legend><i class="material-icons">games</i></legend>
+                <div class="grid">
+                    <canvas id="canvas" width="100" height="100">
+                        Use a modern browser (e.g. Chrome, Firefox, Mozilla) to display game.
+                    </canvas>
+                </div>
+            </fieldset>
+            <fieldset id="control" title="control knobs">
+                <legend><i class="material-icons">tune</i></legend>
+                <!-- convert play to "pause" when playing -->
+                <input id="play" class="material-icons" type="button" title="play" value="play_arrow">
+                <input id="step" class="material-icons" type="button" title="step" value="skip_next">
+                <input id="clear" class="material-icons" type="button" title="clear" value="stop">
+                <input id="backup" class="material-icons" type="button" title="backup" value="file_download">
+                <input id="restore" class="material-icons" type="button" title="restore" value="file_upload">
+                <input id="config" class="material-icons" type="button" title="configuration (rules, colors)" value="settings">
+                <input id="help" class="material-icons" type="button" title="help" value="help">
+                <label for="grid" class="material-icons" title="grid">
+                    <input id="grid" type="checkbox" value="on" checked>
+                    <span>border_clear</span>
+                </label>
+                <label for="trail" class="material-icons" title="trail">
+                    <input id="trail" type="checkbox" value="on" checked>
+                    <span>line_weight</span>
+                </label>
+                <label for="speed" class="material-icons" title="speed">
+                    <input id="speed" type="range" value="0" min="-2" max="2" list="ticks">
+                    <datalist id="ticks">
+                        <option value="-2">
+                        <option value="-1">
+                        <option value="0">
+                        <option value="1">
+                        <option value="2">
+                    </datalist>
+                    <span>slow_motion_video</span>
+                </label>
+                <label for="zoom" class="material-icons" title="zoom">
+                    <input id="zoom" type="range" value="0" min="-2" max="2" list="ticks">
+                    <datalist id="ticks">
+                        <option value="-2">
+                        <option value="-1">
+                        <option value="0">
+                        <option value="1">
+                        <option value="2">
+                    </datalist>
+                    <span>zoom_in</span>
+                </label>
+            </fieldset>
+        </section>
+        <footer id="footer">
+            <br />
+        </footer>
+        <!-- scripts load after the body is loaded -->
+        <script type="module" src="./lib/eternal.js"></script>
+    </body>
+</html>

@@ -1,0 +1,1172 @@
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+        <script>
+            const jsonParse = ( function jsParse () { // stolen from Google
+                const number = "(?:-?\\b(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?\\b)";
+                const oneChar = "(?:[^\\0-\\x08\\x0a-\\x1f\"\\\\]|\\\\(?:[\"/\\\\bfnrt]|u[0-9A-Fa-f]{4}))";
+                const string = `(?:"${ oneChar }*")`;
+                const jsonToken = new RegExp ( `${ "(?:false|true|null|[\\{\\}\\[\\]]|" }${ number
+                    }|${ string
+                        })`, "g" );
+                const escapeSequence = new RegExp ( "\\\\(?:([^u])|u(.{4}))", "g" );
+                const escapes = { "\"": "\"", "/": "/", "\\": "\\", "b": "\b", "f": "\f", "n": "\n", "r": "\r", "t": "\t" };
+                function unescapeOne ( _, ch, hex ) { return ch ? escapes[ ch ] : String.fromCharCode ( parseInt ( hex, 16 ) ); }
+                // eslint-disable-next-line no-new-wrappers
+                const EMPTY_STRING = new String ( "" );
+                const SLASH = "\\";
+                // const firstTokenCtors = { "{": Object, "[": Array };
+                // eslint-disable-next-line no-restricted-properties
+                const hop = Object.hasOwnProperty;
+                // eslint-disable-next-line complexity
+                return function jsParse ( json, opt_reviver ) {
+                        const toks = json.match ( jsonToken );
+                        let result;
+                        let [ tok ] = toks;
+                        if ( "{" === tok ) result = {};
+                        else if ( "[" === tok ) result = [];
+                        else throw new Error ( tok );
+                        let key;
+                        const stack = [ result ];
+                        for ( let i = 1, n = toks.length; i < n; ++i ) {
+                            tok = toks[ i ]; let cont;
+                            switch ( tok.charCodeAt ( 0 ) ) {
+                                default:
+                                    [ cont ] = stack;
+                                    cont[ key || cont.length ] = +tok;
+                                    key = void 0;
+                                    break;
+                                case 0x22:
+                                    tok = tok.substring ( 1, tok.length - 1 );
+                                    if ( tok.indexOf ( SLASH ) !== -1 ) tok = tok.replace ( escapeSequence, unescapeOne );
+                                    [ cont ] = stack;
+                                    if ( ! key ) {
+                                        void 0;
+                                        if ( cont instanceof Array ) {
+                                            void 0;
+                                            key = cont.length;
+                                            }
+                                        else {
+                                            key = tok || EMPTY_STRING;
+                                            break;
+                                            }
+                                        }
+                                    cont[ key ] = tok;
+                                    key = void 0;
+                                    break;
+                                case 0x5b:
+                                    [ cont ] = stack;
+                                    stack.unshift ( cont[ key || cont.length ] = [] );
+                                    key = void 0;
+                                    break;
+                                case 0x5d:
+                                    stack.shift ();
+                                    break;
+                                case 0x66:
+                                    [ cont ] = stack;
+                                    cont[ key || cont.length ] = false;
+                                    key = void 0;
+                                    break;
+                                case 0x6e:
+                                    [ cont ] = stack;
+                                    cont[ key || cont.length ] = null;
+                                    key = void 0;
+                                    break;
+                                case 0x74:
+                                    [ cont ] = stack;
+                                    cont[ key || cont.length ] = true;
+                                    key = void 0;
+                                    break;
+                                case 0x7b:
+                                    [ cont ] = stack;
+                                    stack.unshift ( cont[ key || cont.length ] = {} );
+                                    key = void 0;
+                                    break;
+                                case 0x7d:
+                                    stack.shift ();
+                                    break;
+                                }
+                            }
+                        if ( stack.length ) throw new Error ();
+                        if ( opt_reviver ) {
+                            const walk = function ( holder, key ) {
+                                    const value = holder[ key ];
+                                    if ( value && typeof value === "object" ) {
+                                        let toDelete = null;
+                                        for ( const k in value ) if ( hop.call ( value, k ) ) {
+                                            const v = walk ( value, k );
+                                            if ( v === void 0 ) {
+                                                toDelete = toDelete || [];
+                                                toDelete.push ( k );
+                                                }
+                                            else value [ k ] = v;
+                                            }
+                                        if ( toDelete ) for ( let i = toDelete.length; --i >= 0; ) delete value[ toDelete[ i ] ];
+                                        }
+                                    return opt_reviver.call ( holder, key, value );
+                                    };
+                            result = walk ( { "": result }, "" );
+                            }
+                        return result;
+                        };
+                } ) ();
+            const GOL = {
+
+                columns: 0,
+                rows: 0,
+
+                waitTime: 0,
+                generation: 0,
+
+                running: false,
+                autoplay: false,
+
+                // Clear state
+                clear: {
+                    schedule: false
+                    },
+
+                // Average execution times
+                times: {
+                    algorithm: 0,
+                    gui: 0
+                    },
+
+                // DOM elements
+                element: {
+                    generation: null,
+                    livecells: null,
+                    hint: null,
+                    messages: {
+                        layout: null
+                        }
+                    },
+
+                // Initial state
+                initialState: "[{\"39\":[110]},{\"40\":[112]},{\"41\":[109,110,113,114,115]}]",
+
+                // Trail state
+                trail: {
+                    current: true,
+                    schedule: false
+                    },
+
+                // Grid style
+                grid: {
+                    current: 0,
+
+                    schemes: [
+                        {
+                            color: "#F3F3F3"
+                            },
+                        {
+                            color: "#FFFFFF"
+                            },
+                        {
+                            color: "#666666"
+                            },
+                        {
+                            color: "" // Special case: 0px grid
+                            }
+                        ]
+                    },
+
+
+                // Zoom level
+                zoom: {
+                    current: 0,
+                    schedule: false,
+
+                    schemes: [
+                        // { columns : 100, rows : 48, cellSize : 8 },
+                        {
+                            columns: 180,
+                            rows: 86,
+                            cellSize: 4
+                            },
+                        {
+                            columns: 300,
+                            rows: 144,
+                            cellSize: 2
+                            },
+                        {
+                            columns: 450,
+                            rows: 216,
+                            cellSize: 1
+                            }
+                        ]
+                    },
+
+                // Cell colors
+                colors: {
+                    current: 0,
+                    schedule: false,
+
+                    schemes: [
+                        {
+                            dead: "#FFFFFF",
+                            trail: [ "#FEB2FE" ],
+                            alive: [ "#9898FF", "#8585FF", "#7272FF", "#5F5FFF", "#4C4CFF", "#3939FF", "#2626FF", "#1313FF", "#0000FF", "#1313FF", "#2626FF", "#3939FF", "#4C4CFF", "#5F5FFF", "#7272FF", "#8585FF" ]
+                            },
+                        {
+                            dead: "#FFFFFF",
+                            trail: [ "#EE82EE" ],
+                            alive: [ "#000000" ]
+                            },
+                        {
+                            dead: "#FFFFFF",
+                            trail: [ "#9898FF", "#8585FF", "#7272FF", "#5F5FFF", "#4C4CFF", "#3939FF", "#2626FF", "#1313FF", "#0000FF", "#1313FF", "#2626FF", "#3939FF", "#4C4CFF", "#5F5FFF", "#7272FF", "#8585FF" ],
+                            alive: [ "#000000" ]
+                            }
+                        ]
+                    },
+
+                init () { // on load event
+                        try {
+                            this.listLife.init ();   // Reset/init algorithm
+                            this.loadConfig ();      // Load config from URL (autoplay, colors, zoom, ...)
+                            this.loadState ( this.helpers.getUrlParameter ( "s" ) );       // Load state from URL
+                            this.keepDOMElements (); // Keep DOM References (getElementsById)
+                            this.canvas.init ();     // Init canvas GUI
+                            this.registerEvents ();  // Register event handlers
+
+                            this.prepare ();
+                            }
+                        catch ( e ) {
+                            // eslint-disable-next-line no-alert
+                            alert ( `Error: ${ e }` );
+                            }
+                        },
+
+                loadConfig () {
+                        let colors, grid, zoom;
+
+                        this.autoplay = this.helpers.getUrlParameter ( "autoplay" ) === "1" ? true : this.autoplay;
+                        this.trail.current = this.helpers.getUrlParameter ( "trail" ) === "1" ? true : this.trail.current;
+
+                        // Initial color config
+                        colors = parseInt ( this.helpers.getUrlParameter ( "colors" ), 10 );
+                        if ( isNaN ( colors ) || colors < 1 || colors > GOL.colors.schemes.length ) colors = 1;
+
+
+                        // Initial grid config
+                        grid = parseInt ( this.helpers.getUrlParameter ( "grid" ), 10 );
+                        if ( isNaN ( grid ) || grid < 1 || grid > GOL.grid.schemes.length ) grid = 1;
+
+
+                        // Initial zoom config
+                        zoom = parseInt ( this.helpers.getUrlParameter ( "zoom" ), 10 );
+                        if ( isNaN ( zoom ) || zoom < 1 || zoom > GOL.zoom.schemes.length ) zoom = 1;
+
+
+                        this.colors.current = colors - 1;
+                        this.grid.current = grid - 1;
+                        this.zoom.current = zoom - 1;
+
+                        this.rows = this.zoom.schemes[ this.zoom.current ].rows;
+                        this.columns = this.zoom.schemes[ this.zoom.current ].columns;
+                        },
+
+
+                loadState ( s ) {
+                        if ( s === "random" ) this.randomState ();
+                        else {
+                            if ( s === undefined ) s = this.initialState;
+
+                            GOL.restoreState ( jsonParse ( decodeURI ( s ) ) );
+                            }
+                        },
+
+                restoreState ( state ) {
+                        for (
+                            let i = 0;
+                            i < state.length;
+                            i++ ) for (
+                                const y in state[ i ]
+                                ) for (
+                                    let j = 0;
+                                    j < state[ i ] [ y ].length;
+                                    j++
+                                    ) this.listLife.addCell ( state[ i ][ y ][ j ], parseInt ( y, 10 ), this.listLife.actualState );
+                        },
+
+                recordState ( from = [ 0, 0 ], to = [ Infinity, Infinity ] ) { // eslint-disable-line no-restricted-syntax
+                        let cellState = "";
+
+                        for (
+                            let i = 0;
+                            i < GOL.listLife.actualState.length;
+                            i++
+                            ) {
+                            const [ y ] = GOL.listLife.actualState [ i ];
+                            if ( from [ 1 ] <= y && y <= to [ 1 ] ) {
+                                cellState += `{"${ GOL.listLife.actualState [ i ] [ 0 ] }":[`;
+
+                                for (
+                                    let j = 1;
+                                    j < GOL.listLife.actualState [ i ].length;
+                                    j++
+                                    ) {
+                                    const x = GOL.listLife.actualState [ i ] [ j ];
+                                    if ( from [ 0 ] <= x && x <= to [ 0 ] ) cellState += `${
+                                        GOL.listLife.actualState [ i ] [ j ] },`;
+                                    }
+                                cellState = cellState [ cellState.length - 1 ] === "," ?
+                                    `${ cellState.substring ( 0, cellState.length - 1 ) }]},` :
+                                    `${ cellState }]},`;
+                                }
+                            }
+
+                        return cellState [ cellState.length - 1 ] === "," ?
+                            `[${ cellState.substring ( 0, cellState.length - 1 ) }]` :
+                            `[${ cellState }]`;
+                        },
+
+                randomState () {
+                        const liveCells = this.rows * this.columns * 0.12;
+
+                        for ( let i = 0; i < liveCells; i++ ) this.listLife.addCell (
+                            this.helpers.random ( 0, this.columns - 1 ),
+                            this.helpers.random ( 0, this.rows - 1 ),
+                            this.listLife.actualState
+                            );
+
+                        this.listLife.nextGeneration ();
+                        },
+
+                cleanUp () {
+                        this.listLife.init (); // Reset/init algorithm
+                        this.prepare ();
+                        },
+
+
+                prepare () {
+                        this.generation = this.times.algorithm = this.times.gui = 0;
+                        this.mouseDown = this.clear.schedule = false;
+
+                        this.element.generation.innerHTML = "0";
+                        this.element.livecells.innerHTML = "0";
+
+                        this.canvas.clearWorld (); // Reset GUI
+                        this.canvas.drawWorld (); // Draw State
+
+                        if ( this.autoplay ) { // Next Flow
+                            this.autoplay = false;
+                            this.handlers.buttons.run ();
+                            }
+                        },
+
+
+                keepDOMElements () {
+                        [
+                            "generation",
+                            "livecells",
+                            ].forEach ( id => ( this.element [ id ] = document.getElementById ( id ) ) );
+                        this.element.messages.layout = document.getElementById ( "layoutMessages" );
+                        },
+
+
+                registerEvents () {
+                        // Keyboard Events
+                        this.helpers.registerEvent ( document.body, "keyup", this.handlers.keyboard, false );
+
+                        [
+                            "Run",
+                            "Step",
+                            "Clear",
+                            "Trail",
+                            "Grid",
+                            "Colors",
+                            "Backup"
+                            ].forEach (
+                                control => {
+                                        this.helpers.registerEvent (
+                                            document.getElementById ( `button${ control }` ),
+                                            "click",
+                                            this.handlers.buttons [ control.toLowerCase () ],
+                                            false
+                                            );
+                                        },
+                                this
+                                );
+                        },
+
+                nextStep () {
+                        // Algorithm run
+                        let algorithmTime = new Date ();
+                        const liveCellNumber = this.listLife.nextGeneration ();
+                        algorithmTime = new Date () - algorithmTime;
+
+                        // Canvas run
+                        let guiTime = new Date ();
+                        for ( let i = 0; i < this.listLife.redrawList.length; i++ ) {
+                            const [ x, y ] = this.listLife.redrawList [ i ];
+
+                            if ( this.listLife.redrawList[ i ][ 2 ] === 1 ) this.canvas.changeCelltoAlive ( x, y );
+                            else if ( this.listLife.redrawList[ i ][ 2 ] === 2 ) this.canvas.keepCellAlive ( x, y );
+                            else this.canvas.changeCelltoDead ( x, y );
+                            }
+                        guiTime = new Date () - guiTime;
+
+                        // Pos-run updates
+
+                        // Clear Trail
+                        if ( this.trail.schedule ) {
+                            this.trail.schedule = false;
+                            this.canvas.drawWorld ();
+                            }
+
+                        // Change Grid
+                        if ( this.grid.schedule ) {
+                            this.grid.schedule = false;
+                            this.canvas.drawWorld ();
+                            }
+
+                        // Change Colors
+                        if ( this.colors.schedule ) {
+                            this.colors.schedule = false;
+                            this.canvas.drawWorld ();
+                            }
+
+                        // Running Information
+                        this.generation++;
+                        this.element.generation.innerHTML = this.generation;
+                        this.element.livecells.innerHTML = liveCellNumber;
+
+                        const r = 1.0 / this.generation;
+                        this.times.algorithm = this.times.algorithm * ( 1 - r ) + algorithmTime * r;
+                        this.times.gui = this.times.gui * ( 1 - r ) + guiTime * r;
+
+                        // Flow Control
+                        if ( this.running ) setTimeout ( () => {
+                                GOL.nextStep ();
+                                }, this.waitTime );
+                        else if ( this.clear.schedule ) this.cleanUp ();
+                        },
+
+
+                handlers: {
+
+                    mouseDown: false,
+                    metaDown: false, // dual-type variable: if not false, contains the initial position where meta was pressed down
+                    lastX: 0,
+                    lastY: 0,
+                    cellState: "",
+
+                    canvasMouseDown ( event ) {
+                            const position = GOL.helpers.mousePosition ( event );
+                            GOL.handlers.mouseDown = true;
+                            if ( event.metaKey ) GOL.handlers.metaDown = position;
+                            else {
+                                GOL.canvas.switchCell ( ...position );
+                                [ GOL.handlers.lastX, GOL.handlers.lastY ] = position;
+                                }
+                            },
+
+                    canvasMouseUp ( event ) {
+                            GOL.handlers.mouseDown = false;
+                            if ( GOL.handlers.metaDown ) {
+                                const metaUp = GOL.helpers.mousePosition ( event );
+                                GOL.handlers.cellState = GOL.recordState ( GOL.handlers.metaDown, metaUp );
+                                GOL.handlers.metaDown = false;
+                                }
+                            },
+
+                    canvasMouseMove ( event ) {
+                            if ( GOL.handlers.mouseDown && ! GOL.handlers.metaDown ) {
+                                const position = GOL.helpers.mousePosition ( event );
+                                if ( position[ 0 ] !== GOL.handlers.lastX || position[ 1 ] !== GOL.handlers.lastY ) {
+                                    GOL.canvas.switchCell ( ...position );
+                                    [ GOL.handlers.lastX, GOL.handlers.lastY ] = position;
+                                    }
+                                }
+                            },
+
+                    keyboard ( e ) {
+                            let event = e;
+                            if ( ! event ) ( { event } = window );
+
+                            const { buttons } = GOL.handlers;
+                            switch ( event.keyCode ) {
+                                case 67: // C
+                                case 99: // c
+                                    return void buttons.clear ();
+                                case 82: // R
+                                case 114: // r
+                                    return void buttons.run ();
+                                case 83: // S
+                                case 115: // s
+                                    return void buttons.step ();
+                                case 86: // V
+                                case 118: { // v
+                                    const { cellState } = GOL.handlers;
+                                    if ( cellState.length !== 0 ) {
+                                        const params = `?autoplay=0&trail=${
+                                            GOL.trail.current ? "1" : "0" }&grid=${
+                                                GOL.grid.current + 1 }&colors=${
+                                                    GOL.colors.current + 1 }&zoom=${
+                                                        GOL.zoom.current + 1 }&s=${
+                                                            cellState }`;
+                                        window.location.href = params;
+                                        }
+                                    }
+                                    // fall through
+                                default:
+                                    return void 0;
+                                }
+                            },
+
+                    buttons: {
+
+                        run () {
+                                GOL.running = ! GOL.running;
+                                if ( GOL.running ) {
+                                    GOL.nextStep ();
+                                    document.getElementById ( "buttonRun" ).value = "Stop";
+                                    }
+                                else document.getElementById ( "buttonRun" ).value = "Run";
+                                },
+
+
+                        step () {
+                                if ( ! GOL.running ) GOL.nextStep ();
+                                },
+
+
+                        clear () {
+                                if ( GOL.running ) {
+                                    GOL.clear.schedule = true;
+                                    GOL.running = false;
+                                    document.getElementById ( "buttonRun" ).value = "Run";
+                                    }
+                                else GOL.cleanUp ();
+                                },
+
+
+                        trail () {
+                                GOL.element.messages.layout.innerHTML = GOL.trail.current ? "Trail is Off" : "Trail is On";
+                                GOL.trail.current = ! GOL.trail.current;
+                                if ( GOL.running ) GOL.trail.schedule = true;
+                                else GOL.canvas.drawWorld ();
+                                },
+
+
+                        colors () {
+                                GOL.colors.current = ( GOL.colors.current + 1 ) % GOL.colors.schemes.length;
+                                GOL.element.messages.layout.innerHTML = `Color Scheme #${ GOL.colors.current + 1 }`;
+                                if ( GOL.running ) GOL.colors.schedule = true; // Delay redraw
+                                else GOL.canvas.drawWorld (); // Force complete redraw
+                                },
+
+
+                        grid () {
+                                GOL.grid.current = ( GOL.grid.current + 1 ) % GOL.grid.schemes.length;
+                                GOL.element.messages.layout.innerHTML = `Grid Scheme #${ GOL.grid.current + 1 }`;
+                                if ( GOL.running ) GOL.grid.schedule = true; // Delay redraw
+                                else GOL.canvas.drawWorld (); // Force complete redraw
+                                },
+
+                        backup () {
+                                const cellState = GOL.recordState ();
+
+                                if ( cellState.length !== 0 ) {
+                                    const params = `?autoplay=0&trail=${
+                                        GOL.trail.current ? "1" : "0" }&grid=${
+                                            GOL.grid.current + 1 }&colors=${
+                                                GOL.colors.current + 1 }&zoom=${
+                                                    GOL.zoom.current + 1 }&s=${
+                                                        cellState }`;
+
+                                    document.getElementById ( "backupURL" ).href = params;
+                                    document.getElementById ( "backup" ).style.display = "inline";
+                                    }
+                                },
+                        }
+                    },
+
+                canvas: {
+
+                    context: null,
+                    width: null,
+                    height: null,
+                    age: null,
+                    cellSize: null,
+                    cellSpace: null,
+
+                    init () {
+                            this.canvas = document.getElementById ( "canvas" );
+                            this.context = this.canvas.getContext ( "2d" );
+
+                            this.cellSize = GOL.zoom.schemes[ GOL.zoom.current ].cellSize;
+                            this.cellSpace = 1;
+
+                            GOL.helpers.registerEvent ( this.canvas, "mousedown", GOL.handlers.canvasMouseDown, false );
+                            GOL.helpers.registerEvent ( document, "mouseup", GOL.handlers.canvasMouseUp, false );
+                            GOL.helpers.registerEvent ( this.canvas, "mousemove", GOL.handlers.canvasMouseMove, false );
+
+                            this.clearWorld ();
+                            },
+
+                    clearWorld () {
+                            let i, j;
+
+                            // Init ages (Canvas reference)
+                            this.age = [];
+                            for ( i = 0; i < GOL.columns; i++ ) {
+                                this.age[ i ] = [];
+                                for ( j = 0; j < GOL.rows; j++ ) this.age[ i ][ j ] = 0; // Dead
+                                }
+                            },
+
+                    drawWorld () {
+                            let i, j;
+
+                            // Special no grid case
+                            if ( GOL.grid.schemes[ GOL.grid.current ].color === "" ) {
+                                this.setNoGridOn ();
+                                this.width = this.height = 0;
+                                }
+                            else {
+                                this.setNoGridOff ();
+                                this.width = this.height = 1;
+                                }
+
+                            // Dynamic canvas size
+                            this.width = this.width + this.cellSpace * GOL.columns + this.cellSize * GOL.columns;
+                            this.canvas.setAttribute ( "width", this.width );
+
+                            this.height = this.height + this.cellSpace * GOL.rows + this.cellSize * GOL.rows;
+                            this.canvas.getAttribute ( "height", this.height );
+
+                            // Fill background
+                            this.context.fillStyle = GOL.grid.schemes[ GOL.grid.current ].color;
+                            this.context.fillRect ( 0, 0, this.width, this.height );
+
+                            for (
+                                i = 0;
+                                i < GOL.columns;
+                                i++
+                                ) for (
+                                    j = 0;
+                                    j < GOL.rows;
+                                    j++
+                                    ) this.drawCell ( i, j, GOL.listLife.isAlive ( i, j ) );
+                            },
+
+                    setNoGridOn () {
+                            this.cellSize = GOL.zoom.schemes[ GOL.zoom.current ].cellSize + 1;
+                            this.cellSpace = 0;
+                            },
+
+
+                    setNoGridOff () {
+                            this.cellSize = GOL.zoom.schemes[ GOL.zoom.current ].cellSize;
+                            this.cellSpace = 1;
+                            },
+
+                    drawCell ( i, j, alive ) {
+                            if ( alive ) {
+                                if ( this.age[ i ][ j ] > -1 ) this.context.fillStyle = GOL.colors.schemes[ GOL.colors.current ].alive[ this.age[ i ][ j ] % GOL.colors.schemes[ GOL.colors.current ].alive.length ];
+                                }
+                            else
+                            if ( GOL.trail.current && this.age[ i ][ j ] < 0 ) this.context.fillStyle = GOL.colors.schemes[ GOL.colors.current ].trail[ this.age[ i ][ j ] * -1 % GOL.colors.schemes[ GOL.colors.current ].trail.length ];
+                            else this.context.fillStyle = GOL.colors.schemes[ GOL.colors.current ].dead;
+
+
+                            this.context.fillRect ( this.cellSpace + this.cellSpace * i + this.cellSize * i, this.cellSpace + this.cellSpace * j + this.cellSize * j, this.cellSize, this.cellSize );
+                            },
+
+
+                    switchCell ( i, j ) {
+                            if ( GOL.listLife.isAlive ( i, j ) ) {
+                                this.changeCelltoDead ( i, j );
+                                GOL.listLife.removeCell ( i, j, GOL.listLife.actualState );
+                                }
+                            else {
+                                this.changeCelltoAlive ( i, j );
+                                GOL.listLife.addCell ( i, j, GOL.listLife.actualState );
+                                }
+                            },
+
+                    keepCellAlive ( i, j ) {
+                            if ( i >= 0 && i < GOL.columns && j >= 0 && j < GOL.rows ) {
+                                this.age[ i ][ j ]++;
+                                this.drawCell ( i, j, true );
+                                }
+                            },
+
+
+                    changeCelltoAlive ( i, j ) {
+                            if ( i >= 0 && i < GOL.columns && j >= 0 && j < GOL.rows ) {
+                                this.age[ i ][ j ] = 1;
+                                this.drawCell ( i, j, true );
+                                }
+                            },
+
+                    changeCelltoDead ( i, j ) {
+                            if ( i >= 0 && i < GOL.columns && j >= 0 && j < GOL.rows ) {
+                                this.age[ i ][ j ] = -this.age[ i ][ j ]; // Keep trail
+                                this.drawCell ( i, j, false );
+                                }
+                            }
+                    },
+
+
+                listLife: {
+
+                    actualState: [],
+                    redrawList: [],
+
+                    init () {
+                            this.actualState = [];
+                            },
+
+                    nextGeneration () {
+                            let x, y, i, j, m, key, t1, t2, alive = 0, neighbours, deadNeighbours;
+                            const allDeadNeighbours = {}, newState = [];
+                            this.redrawList = [];
+
+                            for ( i = 0; i < this.actualState.length; i++ ) {
+                                this.topPointer = 1;
+                                this.bottomPointer = 1;
+
+                                for ( j = 1; j < this.actualState[ i ].length; j++ ) {
+                                    x = this.actualState[ i ][ j ];
+                                    y = this.actualState[ i ][ 0 ]; // eslint-disable-line prefer-destructuring
+
+                                    // Possible dead neighbours
+                                    deadNeighbours = [ [ x - 1, y - 1, 1 ], [ x, y - 1, 1 ], [ x + 1, y - 1, 1 ], [ x - 1, y, 1 ], [ x + 1, y, 1 ], [ x - 1, y + 1, 1 ], [ x, y + 1, 1 ], [ x + 1, y + 1, 1 ] ];
+
+                                    // Get number of live neighbours and remove alive neighbours from deadNeighbours
+                                    neighbours = this.getNeighboursFromAlive ( x, y, i, deadNeighbours );
+
+                                    // Join dead neighbours to check list
+                                    for ( m = 0; m < 8; m++ ) if ( deadNeighbours[ m ] !== undefined ) {
+                                        key = `${ deadNeighbours[ m ][ 0 ] },${ deadNeighbours[ m ][ 1 ] }`; // Create hashtable key
+
+                                        allDeadNeighbours[ key ] = allDeadNeighbours[ key ] === undefined ?
+                                            1 :
+                                            allDeadNeighbours[ key ] + 1;
+                                        }
+
+
+                                    if (
+                                        neighbours === 0 ||
+                                        neighbours === 1 ||
+                                        neighbours > 3
+                                        ) this.redrawList.push ( [ x, y, 0 ] ); // Kill cell
+                                    else {
+                                        this.addCell ( x, y, newState );
+                                        alive++;
+                                        this.redrawList.push ( [ x, y, 2 ] ); // Keep alive
+                                        }
+                                    }
+                                }
+
+                            // Process dead neighbours
+                            for ( key in allDeadNeighbours ) if ( allDeadNeighbours[ key ] === 3 ) { // Add new Cell
+                                key = key.split ( "," );
+                                t1 = parseInt ( key[ 0 ], 10 );
+                                t2 = parseInt ( key[ 1 ], 10 );
+
+                                this.addCell ( t1, t2, newState );
+                                alive++;
+                                this.redrawList.push ( [ t1, t2, 1 ] );
+                                }
+
+                            this.actualState = newState;
+
+                            return alive;
+                            },
+
+                    topPointer: 1,
+                    middlePointer: 1,
+                    bottomPointer: 1,
+
+                    // eslint-disable-next-line complexity
+                    getNeighboursFromAlive ( x, y, i, possibleNeighboursList ) {
+                            let neighbours = 0, k;
+
+                            // Top
+                            if ( this.actualState[ i - 1 ] !== undefined ) if ( this.actualState[ i - 1 ][ 0 ] === y - 1 ) {
+                                for ( k = this.topPointer; k < this.actualState[ i - 1 ].length; k++ ) if ( this.actualState[ i - 1 ][ k ] >= x - 1 ) {
+                                    if ( this.actualState[ i - 1 ][ k ] === x - 1 ) {
+                                        possibleNeighboursList[ 0 ] = undefined;
+                                        this.topPointer = k + 1;
+                                        neighbours++;
+                                        }
+
+                                    if ( this.actualState[ i - 1 ][ k ] === x ) {
+                                        possibleNeighboursList[ 1 ] = undefined;
+                                        this.topPointer = k;
+                                        neighbours++;
+                                        }
+
+                                    if ( this.actualState[ i - 1 ][ k ] === x + 1 ) {
+                                        possibleNeighboursList[ 2 ] = undefined;
+                                        this.topPointer = k === 1 ? 1 : k - 1;
+                                        neighbours++;
+                                        }
+
+                                    if ( this.actualState[ i - 1 ][ k ] > x + 1 ) break;
+                                    }
+                                }
+
+
+                            // Middle
+                            for ( k = 1; k < this.actualState[ i ].length; k++ ) if ( this.actualState[ i ][ k ] >= x - 1 ) {
+                                if ( this.actualState[ i ][ k ] === x - 1 ) {
+                                    possibleNeighboursList[ 3 ] = undefined;
+                                    neighbours++;
+                                    }
+
+                                if ( this.actualState[ i ][ k ] === x + 1 ) {
+                                    possibleNeighboursList[ 4 ] = undefined;
+                                    neighbours++;
+                                    }
+
+                                if ( this.actualState[ i ][ k ] > x + 1 ) break;
+                                }
+
+
+                            // Bottom
+                            if ( this.actualState[ i + 1 ] !== undefined ) if ( this.actualState[ i + 1 ][ 0 ] === y + 1 ) {
+                                for ( k = this.bottomPointer; k < this.actualState[ i + 1 ].length; k++ ) if ( this.actualState[ i + 1 ][ k ] >= x - 1 ) {
+                                    if ( this.actualState[ i + 1 ][ k ] === x - 1 ) {
+                                        possibleNeighboursList[ 5 ] = undefined;
+                                        this.bottomPointer = k + 1;
+                                        neighbours++;
+                                        }
+
+                                    if ( this.actualState[ i + 1 ][ k ] === x ) {
+                                        possibleNeighboursList[ 6 ] = undefined;
+                                        this.bottomPointer = k;
+                                        neighbours++;
+                                        }
+
+                                    if ( this.actualState[ i + 1 ][ k ] === x + 1 ) {
+                                        possibleNeighboursList[ 7 ] = undefined;
+
+                                        this.bottomPointer = k === 1 ? 1 : k - 1;
+
+                                        neighbours++;
+                                        }
+
+                                    if ( this.actualState[ i + 1 ][ k ] > x + 1 ) break;
+                                    }
+                                }
+
+                            return neighbours;
+                            },
+
+                    isAlive ( x, y ) {
+                            for (
+                                let i = 0;
+                                i < this.actualState.length;
+                                i++
+                                ) if (
+                                    this.actualState[ i ][ 0 ] === y
+                                    ) for (
+                                        let j = 1;
+                                        j < this.actualState[ i ].length;
+                                        j++ ) if (
+                                            this.actualState[ i ][ j ] === x
+                                            ) return true;
+
+                            return false;
+                            },
+
+                    removeCell ( x, y, state ) {
+                            for (
+                                let i = 0;
+                                i < state.length;
+                                i++
+                                ) if (
+                                    state[ i ][ 0 ] === y
+                                    ) if (
+                                        state[ i ].length === 2
+                                        ) state.splice ( i, 1 ); // Remove all Row
+                                        else for (
+                                            let j = 1;
+                                            j < state[ i ].length;
+                                            j++
+                                            ) if (
+                                                state[ i ][ j ] === x
+                                                ) state[ i ].splice ( j, 1 ); // Remove Element
+                            },
+
+                    addCell ( x, y, state ) {
+                            if ( state.length === 0 ) {
+                                state.push ( [ y, x ] );
+                                return;
+                                }
+
+                            let k, n, m, tempRow, newState = [], added;
+
+                            if ( y < state[ 0 ][ 0 ] ) { // Add to Head
+                                newState = [ [ y, x ] ];
+                                for ( k = 0; k < state.length; k++ ) newState[ k + 1 ] = state[ k ];
+
+
+                                for ( k = 0; k < newState.length; k++ ) state[ k ] = newState[ k ];
+                                }
+                            else if ( y > state[ state.length - 1 ][ 0 ] ) state[ state.length ] = [ y, x ]; // Add to Tail
+                            else for ( n = 0; n < state.length; n++ ) { // Add to Middle
+                                if ( state[ n ][ 0 ] === y ) { // Level Exists
+                                    tempRow = [];
+                                    added = false;
+                                    for ( m = 1; m < state[ n ].length; m++ ) {
+                                        // eslint-disable-next-line max-depth
+                                        if ( ! added && x < state[ n ][ m ] ) {
+                                            tempRow.push ( x );
+                                            added = ! added;
+                                            }
+                                        tempRow.push ( state[ n ][ m ] );
+                                        }
+                                    tempRow.unshift ( y );
+                                    if ( ! added ) tempRow.push ( x );
+                                    state[ n ] = tempRow;
+                                    return;
+                                    }
+
+                                if ( y < state[ n ][ 0 ] ) { // Create Level
+                                    newState = [];
+                                    for ( k = 0; k < state.length; k++ ) if ( k === n ) { // eslint-disable-line max-depth
+                                        newState[ k ] = [ y, x ];
+                                        newState[ k + 1 ] = state[ k ];
+                                        }
+                                        else if ( k < n ) newState[ k ] = state[ k ];
+                                        else if ( k > n ) newState[ k + 1 ] = state[ k ];
+
+
+                                    for ( k = 0; k < newState.length; k++ ) state[ k ] = newState[ k ];
+
+                                    return;
+                                    }
+                                }
+                            }
+                    },
+
+                helpers: {
+                    urlParameters: null, // Cache
+
+                    random ( min, max ) { // eslint-disable-next-line no-restricted-properties
+                            return min <= max ? min + Math.round ( Math.random () * ( max - min ) ) : null;
+                            },
+
+                    getUrlParameter ( name ) {
+                            if ( this.urlParameters === null ) { // Cache miss
+                                let hash;
+
+                                this.urlParameters = [];
+                                const hashes = window.location.href.slice ( window.location.href.indexOf ( "?" ) + 1 ).split ( "&" );
+
+                                for ( let i = 0; i < hashes.length; i++ ) {
+                                    hash = hashes[ i ].split ( "=" );
+                                    this.urlParameters.push ( hash[ 0 ] );
+                                    this.urlParameters[ hash[ 0 ] ] = hash[ 1 ]; // eslint-disable-line prefer-destructuring
+                                    }
+                                }
+
+                            return this.urlParameters[ name ];
+                            },
+
+                    registerEvent ( element, event, handler, capture ) {
+                            if ( /msie/i.test ( navigator.userAgent ) ) element.attachEvent ( `on${ event }`, handler );
+                            else element.addEventListener ( event, handler, capture );
+                            },
+
+
+                    mousePosition ( e ) {
+                            let event, domObject, posx = 0, posy = 0, top = 0, left = 0;
+                            const cellSize = GOL.zoom.schemes[ GOL.zoom.current ].cellSize + 1;
+
+                            event = e;
+                            if ( ! event ) ( { event } = window );
+
+                            if ( event.pageX || event.pageY ) 	{
+                                posx = event.pageX;
+                                posy = event.pageY;
+                                }
+                            else if ( event.clientX || event.clientY ) 	{
+                                posx = event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+                                posy = event.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+                                }
+
+                            domObject = event.target || event.srcElement;
+
+                            while ( domObject.offsetParent ) {
+                                left += domObject.offsetLeft;
+                                top += domObject.offsetTop;
+                                domObject = domObject.offsetParent;
+                                }
+
+                            domObject.pageTop = top;
+                            domObject.pageLeft = left;
+                            // eslint-disable-next-line no-restricted-properties
+                            const x = Math.ceil ( ( posx - domObject.pageLeft ) / cellSize - 1 );
+                            // eslint-disable-next-line no-restricted-properties
+                            const y = Math.ceil ( ( posy - domObject.pageTop ) / cellSize - 1 );
+
+                            return [ x, y ];
+                            }
+                    }
+
+                };
+
+            GOL.helpers.registerEvent ( window, "load", () => {
+                    GOL.init ();
+                    }, false );
+            </script>
+
+        <style>
+            * {
+                color: black;
+                font-family: "Gill Sans", sans-serif;
+                font-size: 12px;
+                }
+            a {
+                color: #222;
+                }
+            abbr {
+                border-bottom: 1px dotted black;
+                cursor: help;
+                }
+            .cl {
+                clear: both;
+                line-height: 0;
+                }
+            #wrapper {
+                margin: auto;
+                width: 902px;
+                }
+            #title, #title a {
+                font-size: 42px;
+                margin: 0 0 10px 0;
+                padding: 6px 6px 8px;
+                }
+            #title a {
+                text-decoration: none;
+                }
+            canvas {
+                border: 1pt solid #dddddd;
+                margin: 0;
+                padding: 0;
+                }
+            .box {
+                font-size: 12px;
+                margin: 0 0 26px 0;
+                }
+            .box .subtitle {
+                clear: both;
+                color: #222;
+                font-size: 28px;
+                margin: 0 0 8px 0;
+                padding: 2px 4px 1px 4px;
+                }
+            .box .info {
+                margin: 4px 0;
+                }
+            #backup, .button * {
+                border-bottom: 2px solid #333333;
+                border-left: 2px solid #aaaaaa;
+                border-radius: 8px;
+                border-right: 2px solid #333333;
+                border-top: 2px solid #aaaaaa;
+                float: left;
+                font-size: 21px;
+                line-height: 25px;
+                margin: 0 10px 0 0;
+                padding: 2px 6px 5px 6px;
+                }
+            #backup a, .button a {
+                color: #000000;
+                text-decoration: none;
+                }
+            .box input {
+                background: white;
+                border-bottom: 2px solid #333333;
+                border-left: 2px solid #aaaaaa;
+                border-radius: 8px;
+                border-right: 2px solid #333333;
+                border-top: 2px solid #aaaaaa;
+                font-size: 21px;
+                line-height: 25px;
+                }
+            .box.layout span {
+                display: inline;
+                font-size: 20px;
+                padding: 0 0 0 10px;
+                }
+            </style>
+        <title>Conway's Game of Life</title>
+
+        </head>
+    <body>
+        <div id="wrapper">
+            <div id="title">
+                <a href=".">Game of Life</a>
+                </div>
+
+                <canvas id="canvas" width="901" height="433"></canvas>
+
+                <div class="cl">&nbsp;</div>
+            <div class="box controls">
+                <div class="subtitle">Controls</div>
+                <p class="info">
+                    <abbr title="Current Generation">Generation</abbr>:
+                    <span id="generation"></span> |
+                    <abbr title="Number of live cells">Cells</abbr>:
+                    <span id="livecells"></span>
+                    </p>
+                <form action="">
+                    <input type="button" value="Run" id="buttonRun" title="Key: R" />
+                    <input type="button" value="Step" id="buttonStep" title="Key: S" />
+                    <input type="button" value="Clear" id="buttonClear" title="Key: C" />
+                    <input type="button" value="Backup" id="buttonBackup" title="Backup State" />
+                    <span id="backup" style="display: none;"><a id="backupURL" href="">Restore State</a></span>
+                    </form>
+                </div>
+
+            <div class="box layout">
+                <div class="subtitle">Look and feel</div>
+                <form>
+                    <input type="button" id="buttonTrail" value="Trail"/>
+                    <input type="button" id="buttonGrid" value="Grid" />
+                    <input type="button" id="buttonColors" value="Colors" />
+                    <span id="layoutMessages"></span>
+                    </form>
+                </div>
+
+            <div class="box patterns">
+                <div class="subtitle">Starting points</div>
+                <div class="button">
+                    <a href="?autoplay=0&amp;trail=0&amp;grid=1&amp;colors=1&amp;zoom=1&amp;s=%5B{%228%22:%5B60,61,98,103,109,115%5D},{%229%22:%5B60,61,77,78,97,99,102,104,108,110,114,116%5D},{%2210%22:%5B76,79,98,103,105,109,111,115,117%5D},{%2211%22:%5B76,79,104,110,112,116,118%5D},{%2212%22:%5B60,61,63,64,77,78,111,117%5D},{%2213%22:%5B60,61,63,64%5D},{%2219%22:%5B76,77,79,97,98,102,103,108,109,114,115%5D},{%2220%22:%5B76,78,79,97,99,102,104,108,110,114,116%5D},{%2221%22:%5B98,103,105,109,111,115,117%5D},{%2222%22:%5B104,110,112,116,118%5D},{%2223%22:%5B61,111,117%5D},{%2224%22:%5B60,62,76,77%5D},{%2225%22:%5B60,62,75,78%5D},{%2226%22:%5B61,76,79%5D},{%2227%22:%5B77,78,96,97,102,103,109,110,115,116%5D},{%2228%22:%5B96,98,102,104,109,111,115,117%5D},{%2229%22:%5B61,65,97,98,103,105,110,112,116,118%5D},{%2230%22:%5B60,62,64,66,104,105,111,113,117,119%5D},{%2231%22:%5B60,62,64,66,75,76,112,113,118,120%5D},{%2232%22:%5B61,65,75,78,119,120%5D},{%2233%22:%5B77,78%5D},{%2237%22:%5B78,79%5D},{%2238%22:%5B77,79%5D},{%2239%22:%5B77%5D},{%2240%22:%5B60,61,63,64,75,77%5D},{%2241%22:%5B61,63,75,76%5D},{%2242%22:%5B61,63%5D},{%2243%22:%5B60,61,63,64,114%5D},{%2244%22:%5B78,79,84,85,92,93,95,113,115%5D},{%2245%22:%5B79,84,86,92,93,95,96,97,104,112,115%5D},{%2246%22:%5B78,86,98,103,105,111,113,114%5D},{%2247%22:%5B75,77,86,87,92,93,95,96,97,102,105,110,112%5D},{%2248%22:%5B75,76,93,95,103,104,109,112%5D},{%2249%22:%5B93,95,110,111%5D},{%2250%22:%5B94%5D}%5D"
+                        title="Still Life Patterns">Still Life</a>
+                    </div>
+                <div class="button">
+                    <a href="?autoplay=0&amp;trail=0&amp;grid=1&amp;colors=1&amp;zoom=1&amp;s=%5B{%229%22:%5B44%5D},{%2210%22:%5B42,44%5D},{%2211%22:%5B32,33,40,41,54,55%5D},{%2212%22:%5B31,35,40,41,54,55%5D},{%2213%22:%5B20,21,30,36,40,41%5D},{%2214%22:%5B20,21,30,34,36,37,42,44%5D},{%2215%22:%5B30,36,44%5D},{%2216%22:%5B31,35%5D},{%2217%22:%5B32,33%5D}%5D"
+                        title="Starwars Gun">Starwars Gun</a>
+                    </div>
+                <div class="button">
+                    <a href="?autoplay=0&amp;trail=0&amp;grid=1&amp;colors=1&amp;zoom=1&amp;s=%5B{%2239%22:%5B110%5D},{%2240%22:%5B112%5D},{%2241%22:%5B109,110,113,114,115%5D}%5D"
+                        title="Acorn Pattern">Acorn</a>
+                    </div>
+                <div class="button">
+                    <a
+                        href="?autoplay=0&amp;trail=0&amp;grid=1&amp;colors=1&amp;zoom=1&amp;s=random"
+                        title="Random Pattern">Random</a>
+                    </div>
+                <div class="button">
+                    <a href="?autoplay=0&trail=0&grid=4&colors=1&zoom=3&s=[{%22108%22:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,299,300,301,302,303,304,305,306,307,308,309,310,311,312,313,314,315,316,317,318,319,320,321,322,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341,342,343,344,345,346,347,348,349,350,351,352,353,354,355,356,357,358,359,360,361,362,363,364,365,366,367,368,369,370,371,372,373,374,375,376,377,378,379,380,381,382,383,384,385,386,387,388,389,390,391,392,393,394,395,396,397,398,399,400,401,402,403,404,405,406,407,408,409,410,411,412,413,414,415,416,417,418,419,420,421,422,423,424,425,426,427,428,429,430,431,432,433,434,435,436,437,438,439,440,441,442,443,444,445,446,447,448,449]}]"
+                        title="Benchmark #1">Line start</a>
+                    </div>
+                <div class="button">
+                    <a href="?autoplay=0&trail=0&grid=4&colors=1&zoom=1&s=[{%220%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%221%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%222%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%223%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%224%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%225%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%226%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%227%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%228%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%229%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2210%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2211%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2212%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2213%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2214%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2215%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2216%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2217%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2218%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2219%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2220%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2221%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2222%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2223%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2224%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2225%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2226%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2227%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2228%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2229%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2230%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2231%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2232%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2233%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2234%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2235%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2236%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2237%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2238%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2239%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2240%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2241%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2242%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2243%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2244%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2245%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2246%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2247%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2248%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2249%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2250%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2251%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2252%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2253%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2254%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2255%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2256%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2257%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2258%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2259%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2260%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2261%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2262%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2263%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2264%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2265%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2266%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2267%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2268%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2269%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2270%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2271%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2272%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2273%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2274%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2275%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2276%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2277%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2278%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2279%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2280%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2281%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2282%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2283%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]},{%2284%22:[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178]},{%2285%22:[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179]}]"
+                        title="Benchmark #2">Grid start</a>
+                    </div>
+                <div class="cl">&nbsp;</div>
+                </div>
+            </div>
+        </body>
+    </html>

@@ -1,0 +1,17 @@
+#!/bin/bash
+echo "	restarting apache server"
+sudo apachectl restart
+echo "	waiting for apache server to run"
+printf "	"
+for i in $( seq 1 5 )
+do
+    sleep 1
+    printf "."
+done
+printf "\n"
+echo "	opening 'http://localhost/~jeanrenebouvier/eternal/eternal.html' in default browser"
+open http://localhost/~jeanrenebouvier/eternal/eternal.html
+ip=$(ipconfig getifaddr en0)
+echo "	your local ip address is: ${ip}"
+echo "	you can also access the game locally from another device, at 'http://${ip}/~jeanrenebouvier/eternal/eternal.html'"
+exit 0

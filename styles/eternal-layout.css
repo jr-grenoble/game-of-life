@@ -1,0 +1,94 @@
+/* variable declarations */
+:root {
+    --button-margin: 8px;
+    --button-height: 2em;
+    --button-width: 3.5em;
+    --label-height: calc( var( --button-height ) + 1em );
+    --label-width: calc( var( --button-width ) - 1em );
+    --control-height: calc( var( --button-width ) * 4 + 2em );
+    --menu-height: 3em;
+    --min-margin: 0.5ex;
+    --min-padding: 2px;
+    box-sizing: border-box;
+}
+
+html {
+    overflow: hidden;
+}
+
+body {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
+    height: 100%;
+    margin: 0;
+    width: 100%;
+}
+
+body > * {
+    flex: 1 1 var( --menu-height );
+    width: 100%;
+}
+
+#menubar {
+    padding: var( --min-padding );
+    margin-bottom: var( --min-margin );
+    min-height: var( --menu-height );
+}
+
+#main {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    min-height: calc( 100vh - 3 * var( --menu-height ) );
+}
+
+#game {
+    flex: 1 1 calc( 100vmin - 3 * var( --menu-height ) );
+    margin: var( --min-margin );
+    min-height: calc( 100vh - 3 * var( --menu-height ) - var( --control-height ) );
+}
+
+#game > div {
+    text-align: center;
+}
+
+#canvas {
+    margin: auto;
+}
+
+#control {
+    display: block flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    flex: 1 1 var( --control-height );
+    margin: var( --min-margin );
+    min-height: var( --control-height );
+    overflow: auto;
+}
+
+#control > input {
+    flex: 0 1 0;
+    margin: var( --button-margin );
+    min-width: var( --button-width );
+    max-height: var( --button-height );
+}
+
+#control > label {
+    flex: 0 1 0;
+    margin: var( --button-margin );
+    min-width: var( --label-width );
+    max-height: var( --label-height );
+}
+
+#footer {
+    padding: var( --min-padding );
+    margin-top: var( --min-margin );
+    min-height: var( --menu-height );
+    overflow: auto;
+}
+
+#footer code {
+    padding-left: 2px;
+    padding-right: 2px;
+}
