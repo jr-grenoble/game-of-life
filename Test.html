@@ -2,7 +2,11 @@
     <head>
         <style>
         :root {
-
+            /*
+            The 3 grids used to delineate cells are the only regular polygon tessalations of the plane.
+            In their smaller form, they all use cells that are 8px in height. When scaling them, the
+            stroke width must be scaled down proportionally
+             */
             --scale: 1;
             --hex:
                 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' \
@@ -61,7 +65,6 @@
             background-position: var( --hex-grid-position );
         } */
         body  {
-            background-color:#89a;
             background-image: var( --triangle-grid-image );
             background-size: var( --triangle-grid-size );
             background-position: var( --triangle-grid-position );

@@ -40,13 +40,16 @@
 }
 
 #canvas {
-    background-color: #fff;
+    /* background-color: #fff;
     background-image:
         linear-gradient( var( --grid-color ) var( --grid-border ), transparent var( --grid-border ) ),
         linear-gradient( 90deg, var( --grid-color ) var( --grid-border ), transparent var( --grid-border ) );
     background-size:
         var( --grid-size ) var( --grid-size ),
-        var( --grid-size ) var( --grid-size );
+        var( --grid-size ) var( --grid-size ); */
+    background-image: var( --square-grid-image );
+    background-size: var( --square-grid-size );
+    background-position: var( --square-grid-position );
 }
 
 #control {

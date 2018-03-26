@@ -1,0 +1,54 @@
+/* variable declarations */
+:root {
+    /*
+    The 3 grids used to delineate cells are the only regular polygon tessalations of the plane.
+    In their smaller form, they all use cells that are 8px in height. When scaling them, the
+    stroke width must be scaled down proportionally.
+    To make the grid transparent or change its color, change the svg stroke color.
+     */
+    --scale: 1;
+    --hex:
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' \
+            width='12.9443' height='8' stroke='#e0e0e0' stroke-width='1' fill='none'>\
+            <polygon points='0,4 2,0 6.4721,0 8.4721,4 6.4721,8 2,8'/>\
+            </svg>");
+    --hex-grid-image:
+        var( --hex ),
+        var( --hex );
+    --hex-grid-size:
+        calc( var( --scale ) * 12.9443px ) calc( var( --scale ) * 8px),
+        calc( var( --scale ) * 12.9443px ) calc( var( --scale ) * 8px);
+    --hex-grid-position:
+        0px 0px,
+        calc( var( --scale ) * 6.4721px  ) calc( var( --scale ) * 4px );
+
+    --square:
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' \
+            width='8' height='8' stroke='#e0e0e0' stroke-width='1' fill='none'>\
+            <polygon points='0,0 8,0 8,8 8,0'/>\
+            </svg>");
+    --square-grid-image:
+        var( --square ),
+        var( --square );
+    --square-grid-size:
+        calc( var( --scale ) * 8px ) calc( var( --scale ) * 8px),
+        calc( var( --scale ) * 8px ) calc( var( --scale ) * 8px);
+    --square-grid-position:
+        0px 0px,
+        0px 0px;
+
+    --triangle:
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' \
+            width='9.2376' height='16' stroke='#e0e0e0' stroke-width='1' fill='none'>\
+            <polygon points='4.6188,0 9.2376,8 0,8'/>\
+            </svg>");
+    --triangle-grid-image:
+        var( --triangle ),
+        var( --triangle );
+    --triangle-grid-size:
+        calc( var( --scale ) * 9.2376px ) calc( var( --scale ) * 16px),
+        calc( var( --scale ) * 9.2376px ) calc( var( --scale ) * 16px);
+    --triangle-grid-position:
+        0px 0px,
+        calc( var( --scale ) * 4.6188px  ) calc( var( --scale ) * 8px );
+}
