@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "	restarting apache server"
 sudo apachectl restart
-echo "	waiting for apache server to run"
+echo "	waiting 5s for apache server to run"
 printf "	"
 for i in $( seq 1 5 )
 do
