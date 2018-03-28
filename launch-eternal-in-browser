@@ -14,4 +14,11 @@ open http://localhost/~jeanrenebouvier/eternal/eternal.html
 ip=$(ipconfig getifaddr en0)
 echo "	your local ip address is: ${ip}"
 echo "	you can also access the game locally from another device, at 'http://${ip}/~jeanrenebouvier/eternal/eternal.html'"
+echo
+echo "	+——————————————————————————————————————————————+"
+echo "	| To ensure your code is refreshed:            |"
+echo "	| Open the Chrome developpers tooos (debugger) |"
+echo "	| Right click on your browser reload arrow     |"
+echo "	| Select «Empty cache and hard reload»         |"
+echo "	+——————————————————————————————————————————————+"
 exit 0

@@ -7,20 +7,20 @@
     To make the grid transparent or change its color, change the svg stroke color.
      */
     --scale: 1;
-    --hex:
+    --hexagon:
         url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' \
             width='12.9443' height='8' stroke='#e0e0e0' stroke-width='1' fill='none'>\
             <polygon points='0,4 2,0 6.4721,0 8.4721,4 6.4721,8 2,8'/>\
             </svg>");
-    --hex-grid-image:
-        var( --hex ),
-        var( --hex );
-    --hex-grid-size:
+    --hexagon-grid-image:
+        var( --hexagon ),
+        var( --hexagon );
+    --hexagon-grid-size:
         calc( var( --scale ) * 12.9443px ) calc( var( --scale ) * 8px),
         calc( var( --scale ) * 12.9443px ) calc( var( --scale ) * 8px);
-    --hex-grid-position:
-        0px 0px,
-        calc( var( --scale ) * 6.4721px  ) calc( var( --scale ) * 4px );
+    --hexagon-grid-position:
+        1px 0px,
+        calc( var( --scale ) * 6.4721px + 1px ) calc( var( --scale ) * 4px );
 
     --square:
         url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' \
@@ -34,8 +34,8 @@
         calc( var( --scale ) * 8px ) calc( var( --scale ) * 8px),
         calc( var( --scale ) * 8px ) calc( var( --scale ) * 8px);
     --square-grid-position:
-        0px 0px,
-        0px 0px;
+        1px 0px,
+        1px 0px;
 
     --triangle:
         url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' \
@@ -49,6 +49,6 @@
         calc( var( --scale ) * 9.2376px ) calc( var( --scale ) * 16px),
         calc( var( --scale ) * 9.2376px ) calc( var( --scale ) * 16px);
     --triangle-grid-position:
-        0px 0px,
-        calc( var( --scale ) * 4.6188px  ) calc( var( --scale ) * 8px );
+        1px 0px,
+        calc( var( --scale ) * 4.6188px + 1px ) calc( var( --scale ) * 8px );
 }
