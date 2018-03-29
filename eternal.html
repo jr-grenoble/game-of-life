@@ -35,35 +35,49 @@
                 <input id="restore" class="material-icons" type="button" title="restore" value="file_upload">
                 <input id="config" class="material-icons" type="button" title="configuration (rules, colors)" value="settings">
                 <input id="help" class="material-icons" type="button" title="help" value="help">
-                <label for="grid" class="material-icons" title="grid">
-                    <input id="grid" type="checkbox" value="on" checked>
-                    <span>border_clear</span>
-                </label>
                 <label for="trail" class="material-icons" title="trail">
-                    <input id="trail" type="checkbox" value="on" checked>
-                    <span>line_weight</span>
+                    <input id="trail" type="checkbox" value="on"
+                    checked><span>line_weight</span>
                 </label>
                 <label for="speed" class="material-icons" title="speed">
-                    <input id="speed" type="range" value="0" min="-2" max="2" list="ticks">
-                    <datalist id="ticks">
+                    <input id="speed" type="range" value="0" min="-2" max="2"
+                    list="ticks"><datalist id="ticks">
                         <option value="-2">
                         <option value="-1">
                         <option value="0">
                         <option value="1">
                         <option value="2">
-                    </datalist>
-                    <span>slow_motion_video</span>
+                    </datalist><span>slow_motion_video</span>
+                </label>
+                <fieldset id="tiling" title="tiling">
+                    <legend><i class="material-icons light">view_comfy</i></legend>
+                    <label for="triangle" title="triangular tiling">
+                        <input id="triangle" type="radio" name="tiling"
+                        value="triangle"><span id="tri">&#x25b3;</span>
+                    </label>
+                    <label for="square" title="square tiling">
+                        <input id="square" type="radio" name="tiling"
+                        value="square" checked><span id="sqr">&#x2395;</span>
+                    </label>
+                    <label for="hexagon" title="hexagonal tiling">
+                        <input id="hexagon" type="radio" name="tiling"
+                        value="hexagon"><span id="hex">&#x2394;</span>
+                    </label>
+                </fieldset>
+
+                <label for="grid" class="material-icons" title="grid">
+                    <input id="grid" type="checkbox" value="on"
+                    checked><span>border_clear</span>
                 </label>
                 <label for="zoom" class="material-icons" title="zoom">
-                    <input id="zoom" type="range" value="0" min="-2" max="2" list="ticks">
-                    <datalist id="ticks">
+                    <input id="zoom" type="range" value="0" min="-2" max="2"
+                    list="ticks"><datalist id="ticks">
                         <option value="-2">
                         <option value="-1">
                         <option value="0">
                         <option value="1">
                         <option value="2">
-                    </datalist>
-                    <span>zoom_in</span>
+                    </datalist><span>zoom_in</span>
                 </label>
             </fieldset>
         </section>

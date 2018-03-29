@@ -1,14 +1,18 @@
 /* variable declarations */
 :root {
     --button-margin: 8px;
-    --button-height: 2em;
+    --button-height: 1.5em;
     --button-width: 3.5em;
     --label-height: calc( var( --button-height ) + 1em );
     --label-width: calc( var( --button-width ) - 1em );
     --control-height: calc( var( --button-width ) * 4 + 2em );
     --menu-height: 3em;
-    --min-margin: 0.5ex;
+    --min-margin: .5ex;
     --min-padding: 2px;
+    --tiling-height: 2.55em;
+    --tiling-margin: 4px;
+    --tiling-padding: 8.5px;
+    --tiling-shift: .95em;
     box-sizing: border-box;
 }
 
@@ -79,6 +83,21 @@ body > * {
     margin: var( --button-margin );
     min-width: var( --label-width );
     max-height: var( --label-height );
+}
+
+#tiling {
+    display:inline;
+    max-height: var( --tiling-height );
+    padding: var( --min-padding );
+    padding-left: var( --tiling-padding );
+    padding-right: var( --tiling-padding );
+    position: relative;
+    top: var( --tiling-shift );
+}
+#tiling > label {
+    bottom: var( --tiling-shift );
+    margin: var( --tiling-margin );
+    position: relative;
 }
 
 #footer {

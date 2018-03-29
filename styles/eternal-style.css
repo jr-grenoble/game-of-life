@@ -15,6 +15,10 @@
     --grid-image: var( --square-grid-image );
     --grid-size: var( --square-grid-size );
     --grid-position: var( --square-grid-position );
+    --radio-checked: 6px solid #3b99fa;
+    --radio-diameter: 14px;
+    --radio-space: 5px;
+    --radio-unchecked: 1px solid #999999;
     --red-text: #ffffff;
     --red: #a30015;
     --white-inset: 0px 2px 1px white inset;
@@ -29,6 +33,9 @@
     font-weight: lighter;
 }
 
+i.light {
+    color: var( --code );
+}
 #menubar {
     background: var( --red );
     color: var( --red-text );
@@ -48,15 +55,17 @@
 #control {
     border: var( --button-border );
 }
+#control * {
+    transition: box-shadow 0.5s;
+}
 #control > input {
     background-color: var( --button );
     border: var( --button-border );
     border-radius: var( --button-border-radius );
+    box-shadow: var( --white-inset ), var( --white-thin-shadow ), var( --whitish-thiner-shadow ), var( --whitish-thin-shadow );
     color: var( --button-text );
     font-size: var( --button-font-size )!important;
     text-shadow: 0px 2px 0px #fff;
-    box-shadow: var( --white-inset ), var( --white-thin-shadow ), var( --whitish-thiner-shadow ), var( --whitish-thin-shadow );
-    transition: box-shadow 0.5s;
     outline: 0;
 }
 
@@ -72,22 +81,58 @@
 }
 
 #control > label {
+    white-space: nowrap!;
+    position: relative;
+    top: 6px;
+}
+#control > label input[type="checkbox"] {
+    white-space: nowrap;
+    position: relative;
+    bottom: 8px;
+}
+#tiling input[type="radio"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: var( --radio-unchecked );
+    border-radius: 50%;
+    height: var( --radio-diameter );
+    margin-right: var( --radio-space );
+    outline: none;
+    position: relative;
+    top: 3px;
+    transition: 0.25s all linear;
+    width: var( --radio-diameter );
     white-space: nowrap;
 }
 
-#control > input:hover + label span,
+#tiling input[type="radio"]:checked {
+    border: var( --radio-checked );
+}
+
+#tiling {
+    border: var( --button-border );
+}
+
+#sqr, #hex {
+    font-weight: 500;
+    font-size: 160%;
+}
+#tri {
+    font-weight: 900;
+    font-size: 120%;
+}
+
+#control > input:hover + span,
 #control > label:hover {
     text-shadow: var( --whitish-thick-shadow ), var( --whitish-thicker-shadow );
     outline: 0;
 }
 
+#control > label input[type="radio"]:hover,
 #control > label input[type="checkbox"]:hover {
     box-shadow: var( --whitish-thick-shadow ), var( --whitish-thicker-shadow );
     outline: 0;
-}
-
-#control > label input {
-    float: right;
 }
 
 #footer {
