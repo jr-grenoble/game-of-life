@@ -64,12 +64,12 @@
             background-size: var( --hex-grid-size );
             background-position: var( --hex-grid-position );
         } */
-        body  {
+        /* body  {
             background-image: var( --triangle-grid-image );
             background-size: var( --triangle-grid-size );
             background-position: var( --triangle-grid-position );
-        }
-        body > div {
+        } */
+        /* body > div {
             text-align: center;
             padding: calc(20vmin);
             margin: calc(100vmin / 4);
@@ -77,14 +77,109 @@
             background-image: var( --square-grid-image );
             background-size: var( --square-grid-size );
             background-position: var( --square-grid-position );
+        } */
+        :root {
+            --stroke: 1;
+        }
+        #grid-container {
+            height: 476px;
+            overflow: hidden;
+            padding: 10px;
+            width: 635px;
+        }
+        svg {
+            fill: none;
+            height: 1920px;
+            stroke: #e0e0e0;
+            stroke-width: var( --stroke );
+            vector-effect: non-scaling-stroke;
+            width: 1920px;
+        }
+        #grid {
+            fill: url(#hex12);
         }
         </style>
     </head>
     <body>
-        <div>
-            <div>
-                Some text
+        <fieldset>
+            <legend>Game</legend>
+            <div id="grid-container">
+                <svg id="sqr">
+                    <defs>
+                        <!-- hexagons -->
+                        <pattern id="hex4" width="4" height="7" patternUnits="userSpaceOnUse">
+                            <path d='M 2 0 L 2 2.4 0 3.6 0 6 2 7 4 6 4 3.6 2 2.4'/>
+                        </pattern>
+                        <pattern id="hex6" width="6" height="10.5" patternUnits="userSpaceOnUse">
+                            <path d='M 3 0 L 3 3.5 0 5.5 0 9 3 10.5 6 9 6 5.5 3 3.5'/>
+                        </pattern>
+                        <pattern id="hex8" width="8" height="14" patternUnits="userSpaceOnUse">
+                            <path d='M 4 0 L 4 5 0 7 0 12 4 14 8 12 8 7 4 5'/>
+                        </pattern>
+                        <pattern id="hex10" width="10" height="18" patternUnits="userSpaceOnUse">
+                            <path d='M 5 0 L 5 6 0 9 0 30 5 18 10 15 10 9 5 6'/>
+                        </pattern>
+
+<!-- CHANGE PREV HEX IN LINE WITH BELOW -->
+
+
+                        <pattern id="hex12" width="21" height="12" patternUnits="userSpaceOnUse">
+                            <!-- 476x635 -->
+                            <path d='M 21 6 H 14 L 10.5 0 H 3.5 L 0 6 3.5 12 H 10.5 L 14 6'/>
+                        </pattern>
+
+                        <!-- squares -->
+                        <pattern id="sqr4" width="4" height="4" patternUnits="userSpaceOnUse">
+                            <!-- 479x639 -->
+                            <path d="M 4 0 L 0 0 0 4" />
+                        </pattern>
+                        <pattern id="sqr6" width="6" height="6" patternUnits="userSpaceOnUse">
+                            <!-- 477x639 -->
+                            <path d="M 6 0 L 0 0 0 6" />
+                        </pattern>
+                        <pattern id="sqr8" width="8" height="8" patternUnits="userSpaceOnUse">
+                            <!-- 479x639 -->
+                            <path d="M 8 0 L 0 0 0 8" />
+                        </pattern>
+                        <pattern id="sqr10" width="10" height="10" patternUnits="userSpaceOnUse">
+                            <!-- 471x631 -->
+                            <path d="M 10 0 L 0 0 0 10" />
+                        </pattern>
+                        <pattern id="sqr12" width="12" height="12" patternUnits="userSpaceOnUse">
+                            <!-- 471x639 -->
+                            <path d="M 12 0 L 0 0 0 12" />
+                        </pattern>
+
+                        <!-- triangles -->
+                        <pattern id="tri4" width="6" height="10" patternUnits="userSpaceOnUse">
+                            <!-- 480x638 -->
+                            <path d="M 3 0 L 0 5 H 6 Z" />
+                            <path d="M 0 10 H 6 M 0 5 L 3 10 6 5" />
+                        </pattern>
+                        <pattern id="tri6" width="9" height="15" patternUnits="userSpaceOnUse">
+                            <!-- 478x638 -->
+                            <path d="M 4.5 0 L 0 7.5 H 9 Z" />
+                            <path d="M 0 15 H 9 M 0 7.5 L 4.5 15 9 7.5" />
+                        </pattern>
+                        <pattern id="tri8" width="12" height="20" patternUnits="userSpaceOnUse">
+                            <!-- 480x638 -->
+                            <path d="M 6 0 L 0 10 H 12 Z" />
+                            <path d="M 0 20 H 12 M 0 10 L 6 20 12 10" />
+                        </pattern>
+                        <pattern id="tri10" width="15" height="25" patternUnits="userSpaceOnUse">
+                            <!-- 478x635 -->
+                            <path d="M 7.5 0 L 0 12.5 H 15 Z" />
+                            <path d="M 0 25 H 15 M 0 12.5 L 7.5 25 15 12.5" />
+                        </pattern>
+                        <pattern id="tri12" width="18" height="30" patternUnits="userSpaceOnUse">
+                            <!-- 470x638 -->
+                            <path d="M 9 0 L 0 15 H 18 Z" />
+                            <path d="M 0 30 H 18 M 0 15 L 9 30 18 15" />
+                        </pattern>
+                    </defs>
+                    <rect id="grid" width="100%" height="100%" stroke='none' />
+                </svg>
             </div>
-        </div>
+        </fieldset>
     </body>
 </html>

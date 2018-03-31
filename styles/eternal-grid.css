@@ -9,46 +9,46 @@
     --scale: 1;
     --hexagon:
         url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' \
-            width='12.9443' height='8' stroke='#e0e0e0' stroke-width='1' fill='none'>\
-            <polygon points='0,4 2,0 6.4721,0 8.4721,4 6.4721,8 2,8'/>\
+            width='16.1804' height='10' stroke='#e0e0e0' stroke-width='1' fill='none'>\
+            <polygon points='0,5 2.5,0 8.0901,0 10.5901,5 8.0901,10 2.5,10'/>\
             </svg>");
     --hexagon-grid-image:
         var( --hexagon ),
         var( --hexagon );
     --hexagon-grid-size:
-        calc( var( --scale ) * 12.9443px ) calc( var( --scale ) * 8px),
-        calc( var( --scale ) * 12.9443px ) calc( var( --scale ) * 8px);
+        calc( var( --scale ) * 16.1804px ) calc( var( --scale ) * 10px),
+        calc( var( --scale ) * 16.1804px ) calc( var( --scale ) * 10px);
     --hexagon-grid-position:
         1px 0px,
-        calc( var( --scale ) * 6.4721px + 1px ) calc( var( --scale ) * 4px );
+        calc( var( --scale ) * 8.0901px + 1px ) calc( var( --scale ) * 5px );
 
     --square:
         url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' \
-            width='8' height='8' stroke='#e0e0e0' stroke-width='1' fill='none'>\
-            <polygon points='0,0 8,0 8,8 8,0'/>\
+            width='10' height='10' stroke='#e0e0e0' stroke-width='1' fill='none'>\
+            <polygon points='0,0 10,0 10,10 10,0'/>\
             </svg>");
     --square-grid-image:
         var( --square ),
         var( --square );
     --square-grid-size:
-        calc( var( --scale ) * 8px ) calc( var( --scale ) * 8px),
-        calc( var( --scale ) * 8px ) calc( var( --scale ) * 8px);
+        calc( var( --scale ) * 10px ) calc( var( --scale ) * 10px),
+        calc( var( --scale ) * 10px ) calc( var( --scale ) * 10px);
     --square-grid-position:
         1px 0px,
         1px 0px;
 
     --triangle:
         url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' \
-            width='9.2376' height='16' stroke='#e0e0e0' stroke-width='1' fill='none'>\
-            <polygon points='4.6188,0 9.2376,8 0,8'/>\
+            width='13.8564' height='24' stroke='#e0e0e0' stroke-width='1' fill='none'>\
+            <polygon points='6.9282,0 13.8564,12 0,12'/>\
             </svg>");
     --triangle-grid-image:
         var( --triangle ),
         var( --triangle );
     --triangle-grid-size:
-        calc( var( --scale ) * 9.2376px ) calc( var( --scale ) * 16px),
-        calc( var( --scale ) * 9.2376px ) calc( var( --scale ) * 16px);
+        calc( var( --scale ) * 13.8564px ) calc( var( --scale ) * 24px),
+        calc( var( --scale ) * 13.8564px ) calc( var( --scale ) * 24px);
     --triangle-grid-position:
         1px 0px,
-        calc( var( --scale ) * 4.6188px + 1px ) calc( var( --scale ) * 8px );
+        calc( var( --scale ) * 6.9282px + 1px ) calc( var( --scale ) * 12px );
 }
