@@ -19,8 +19,8 @@
         calc( var( --scale ) * 16.1804px ) calc( var( --scale ) * 10px),
         calc( var( --scale ) * 16.1804px ) calc( var( --scale ) * 10px);
     --hexagon-grid-position:
-        1px 0px,
-        calc( var( --scale ) * 8.0901px + 1px ) calc( var( --scale ) * 5px );
+        .5px .5px,
+        calc( var( --scale ) * 8.0901px + .5px ) calc( var( --scale ) * 5px + .5px);
 
     --square:
         url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' \
@@ -49,6 +49,6 @@
         calc( var( --scale ) * 13.8564px ) calc( var( --scale ) * 24px),
         calc( var( --scale ) * 13.8564px ) calc( var( --scale ) * 24px);
     --triangle-grid-position:
-        1px 0px,
-        calc( var( --scale ) * 6.9282px + 1px ) calc( var( --scale ) * 12px );
+        .5px 0px,
+        calc( var( --scale ) * 6.9282px + .5px ) calc( var( --scale ) * 12px );
 }
