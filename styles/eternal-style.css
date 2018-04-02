@@ -48,8 +48,8 @@ i.light {
 
 #canvas {
     background-image: var( --grid-image );
-    background-size: var( --grid-size );
     background-position: var( --grid-position );
+    background-size: var( --grid-size );
 }
 
 #control {

@@ -9,46 +9,51 @@
     --scale: 1;
     --hexagon:
         url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' \
-            width='16.1804' height='10' stroke='#e0e0e0' stroke-width='1' fill='none'>\
-            <polygon points='0,5 2.5,0 8.0901,0 10.5901,5 8.0901,10 2.5,10'/>\
+            width='17.3205080768' height='10' stroke='#e0e0e0' stroke-width='1' fill='none'>\
+            <path d='M 17.3205080768 5 H 11.5470053879 L 8.66025403784 0 2.88675134595 0 0 5 2.88675134595 10 M 8.66025403784 10 L 11.5470053879 5'/>\
             </svg>");
     --hexagon-grid-image:
-        var( --hexagon ),
         var( --hexagon );
     --hexagon-grid-size:
-        calc( var( --scale ) * 16.1804px ) calc( var( --scale ) * 10px),
-        calc( var( --scale ) * 16.1804px ) calc( var( --scale ) * 10px);
+        calc( var( --scale ) * 17.3205080768px ) calc( var( --scale ) * 10px);
     --hexagon-grid-position:
-        .5px .5px,
-        calc( var( --scale ) * 8.0901px + .5px ) calc( var( --scale ) * 5px + .5px);
+        .5px .5px;
 
     --square:
         url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' \
             width='10' height='10' stroke='#e0e0e0' stroke-width='1' fill='none'>\
-            <polygon points='0,0 10,0 10,10 10,0'/>\
+            <path d='M 0 0 H 10 V 10'/>\
             </svg>");
     --square-grid-image:
-        var( --square ),
         var( --square );
     --square-grid-size:
-        calc( var( --scale ) * 10px ) calc( var( --scale ) * 10px),
         calc( var( --scale ) * 10px ) calc( var( --scale ) * 10px);
     --square-grid-position:
-        1px 0px,
         1px 0px;
 
     --triangle:
         url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' \
-            width='13.8564' height='24' stroke='#e0e0e0' stroke-width='1' fill='none'>\
-            <polygon points='6.9282,0 13.8564,12 0,12'/>\
+            width='17.3205080768' height='10' stroke='#e0e0e0' stroke-width='1' fill='none'>\
+            <path d='M 0 0 V 10 L 8.66025403784 5 Z'/>\
             </svg>");
     --triangle-grid-image:
         var( --triangle ),
         var( --triangle );
     --triangle-grid-size:
-        calc( var( --scale ) * 13.8564px ) calc( var( --scale ) * 24px),
-        calc( var( --scale ) * 13.8564px ) calc( var( --scale ) * 24px);
+        calc( var( --scale ) * 17.3205080768px ) calc( var( --scale ) * 10px),
+        calc( var( --scale ) * 17.3205080768px ) calc( var( --scale ) * 10px);
     --triangle-grid-position:
         .5px 0px,
-        calc( var( --scale ) * 6.9282px + .5px ) calc( var( --scale ) * 12px );
+        calc( var( --scale ) * 8.66025403784px ) calc( var( --scale ) * 5px );
+    /* --triangle:
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' \
+            width='17.3205' height='10' stroke='#e0e0e0' stroke-width='1' fill='none'>\
+            <path d='M 17.3205 0 L 0 10 V 0 L 17.3205 10 Z M 8.6603 0 V 10'/>\
+            </svg>");
+    --triangle-grid-image:
+        var( --triangle );
+    --triangle-grid-size:
+        calc( var( --scale ) * 17.3205px ) calc( var( --scale ) * 10px);
+    --triangle-grid-position:
+        .5px 0px; */
 }

@@ -7,77 +7,49 @@
             In their smaller form, they all use cells that are 8px in height. When scaling them, the
             stroke width must be scaled down proportionally
              */
-            --scale: 1;
-            --hex:
-                url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' \
-                    width='12.9443' height='8' stroke='#e0e0e0' stroke-width='1' fill='none'>\
-                    <polygon points='0,4 2,0 6.4721,0 8.4721,4 6.4721,8 2,8'/>\
-                    </svg>");
-            --hex-grid-image:
-                var( --hex ),
-                var( --hex );
-            --hex-grid-size:
-                calc( var( --scale ) * 12.9443px ) calc( var( --scale ) * 8px),
-                calc( var( --scale ) * 12.9443px ) calc( var( --scale ) * 8px);
-            --hex-grid-position:
-                0px 0px,
-                calc( var( --scale ) * 6.4721px  ) calc( var( --scale ) * 4px );
-
-            --square:
-                url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' \
-                    width='8' height='8' stroke='#e0e0e0' stroke-width='1' fill='none'>\
-                    <polygon points='0,0 8,0 8,8 8,0'/>\
-                    </svg>");
-            --square-grid-image:
-                var( --square ),
-                var( --square );
-            --square-grid-size:
-                calc( var( --scale ) * 8px ) calc( var( --scale ) * 8px),
-                calc( var( --scale ) * 8px ) calc( var( --scale ) * 8px);
-            --square-grid-position:
-                0px 0px,
-                0px 0px;
-
+            --scale: 1.5;
             --triangle:
                 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' \
-                    width='9.2376' height='16' stroke='#e0e0e0' stroke-width='1' fill='none'>\
-                    <polygon points='4.6188,0 9.2376,8 0,8'/>\
+                    width='17.3205' height='10' stroke='#e0e0e0' stroke-width='1' fill='none'>\
+                    <path d='M 0 0 V 10 L 8.6603 5 Z'/>\
                     </svg>");
             --triangle-grid-image:
                 var( --triangle ),
                 var( --triangle );
             --triangle-grid-size:
-                calc( var( --scale ) * 9.2376px ) calc( var( --scale ) * 16px),
-                calc( var( --scale ) * 9.2376px ) calc( var( --scale ) * 16px);
+                calc( var( --scale ) * 17.3205px ) calc( var( --scale ) * 10px),
+                calc( var( --scale ) * 17.3205px ) calc( var( --scale ) * 10px);
             --triangle-grid-position:
-                0px 0px,
-                calc( var( --scale ) * 4.6188px  ) calc( var( --scale ) * 8px );
+                .5px 0px,
+                calc( var( --scale ) * 8.6603px ) calc( var( --scale ) * 5px );
 
+            --triangle-border:
+                url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' \
+                    width='17.3205' height='5' stroke='#f00' stroke-width='1' fill='none'>\
+                    <path d='M 8.6603 5 V 0'/>\
+                    </svg>");
+            --triangle-border-slice:
+                calc( var( --scale ) * 5px ) 0px calc( var( --scale ) * 5px ) 0px;
 
             font-family: Roboto, sans-serif;
             font-weight: lighter;
             box-sizing: border-box;
         }
-        /* body  {
-            background-color:#89a;
-            background-image: var( --hex-grid-image );
-            background-size: var( --hex-grid-size );
-            background-position: var( --hex-grid-position );
-        } */
-        /* body  {
+        #tri {
+            margin: 25px;
+            height: calc( var( --scale ) * 100px );
+            width: calc( var( --scale ) * 173.205px );
+            border-image-outset: 20px;
+            /* border-image-width:  calc( var( --scale ) * 5px ) 0px; */
+            /* border-image-slice: var( --triangle-border-slice ); */
+            border-image-repeat:  repeat;
+            border-image-source: var( --triangle-border );
+
             background-image: var( --triangle-grid-image );
             background-size: var( --triangle-grid-size );
             background-position: var( --triangle-grid-position );
-        } */
-        /* body > div {
-            text-align: center;
-            padding: calc(20vmin);
-            margin: calc(100vmin / 4);
-            background-color: #fff;
-            background-image: var( --square-grid-image );
-            background-size: var( --square-grid-size );
-            background-position: var( --square-grid-position );
-        } */
+        }
+
         :root {
             --stroke: 1;
         }
@@ -101,6 +73,8 @@
         </style>
     </head>
     <body>
+        <div id="tri">
+        </div>
         <fieldset>
             <legend>Game</legend>
             <div id="grid-container">
