@@ -2,14 +2,16 @@
 :root {
     /*
     The 3 grids used to delineate cells are the only regular polygon tessalations of the plane.
-    In their smaller form, they all use cells that are 8px in height. When scaling them, the
+    In their normal form, they all use cells that are 10px in height. When scaling them, the
     stroke width must be scaled down proportionally.
     To make the grid transparent or change its color, change the svg stroke color.
-     */
+    *
+    /!\ The font-size is a hint for the javascript engine, allowing to specify the real width of cells.
+    */
     --scale: 1;
     --hexagon:
         url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' \
-            width='17.3205080768' height='10' stroke='#e0e0e0' stroke-width='1' fill='none'>\
+            width='17.3205080768' height='10' stroke='#e0e0e0' stroke-width='1' fill='none' font-size='11.5470053879'>\
             <path d='M 17.3205080768 5 H 11.5470053879 L 8.66025403784 0 2.88675134595 0 0 5 2.88675134595 10 M 8.66025403784 10 L 11.5470053879 5'/>\
             </svg>");
     --hexagon-grid-image:
@@ -21,7 +23,7 @@
 
     --square:
         url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' \
-            width='10' height='10' stroke='#e0e0e0' stroke-width='1' fill='none'>\
+            width='10' height='10' stroke='#e0e0e0' stroke-width='1' fill='none' font-size='10'>\
             <path d='M 0 0 H 10 V 10'/>\
             </svg>");
     --square-grid-image:
@@ -33,7 +35,7 @@
 
     --triangle:
         url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' \
-            width='17.3205080768' height='10' stroke='#e0e0e0' stroke-width='1' fill='none'>\
+            width='17.3205080768' height='10' stroke='#e0e0e0' stroke-width='1' fill='none' font-size='8.66025403784px'>\
             <path d='M 0 0 V 10 L 8.66025403784 5 Z'/>\
             </svg>");
     --triangle-grid-image:
@@ -45,15 +47,5 @@
     --triangle-grid-position:
         .5px 0px,
         calc( var( --scale ) * 8.66025403784px ) calc( var( --scale ) * 5px );
-    /* --triangle:
-        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' \
-            width='17.3205' height='10' stroke='#e0e0e0' stroke-width='1' fill='none'>\
-            <path d='M 17.3205 0 L 0 10 V 0 L 17.3205 10 Z M 8.6603 0 V 10'/>\
-            </svg>");
-    --triangle-grid-image:
-        var( --triangle );
-    --triangle-grid-size:
-        calc( var( --scale ) * 17.3205px ) calc( var( --scale ) * 10px);
-    --triangle-grid-position:
-        .5px 0px; */
+
 }
