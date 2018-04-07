@@ -23,6 +23,22 @@
                     <canvas id="canvas" width="100" height="100">
                         Use a modern browser (e.g. Chrome, Firefox, Mozilla) to display game.
                     </canvas>
+                    <svg id="svg" >
+                        <defs>
+                            <pattern id='hexagon-pattern' width='17.3205080768' height='10' patternUnits='userSpaceOnUse'>
+                                <!-- 471x625 -->
+                                <path d='M 17.3205080768 5 H 11.5470053879 L 8.66025403784 0 2.88675134595 0 0 5 2.88675134595 10 M 8.66025403784 10 L 11.5470053879 5'/>
+                            </pattern>
+                            <pattern id='square-pattern' width='10' height='10' patternUnits='userSpaceOnUse'>
+                                <path d='M 0 0 H 10 H 0 V 10'/>
+                            </pattern>
+                            <pattern id='triangle-pattern' width='17.3205080768' height='10' patternUnits='userSpaceOnUse'>
+                                <path d='M 0 0 V 10 L 17.3205080768 0 V 10 Z'/>
+                                <path d='M 8.66025403784 0 V 10'/>
+                            </pattern>
+                        </defs>
+                        <rect id="grid-background" width="100%" height="100%" />
+                    </svg>
                 </div>
             </fieldset>
             <fieldset id="control" title="control knobs">

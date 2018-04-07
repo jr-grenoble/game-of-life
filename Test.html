@@ -14,9 +14,9 @@
         :root {
             --scale: .75;
             --stroke: calc( 1px / var( --scale ) );
-            --fill: url(#tri-pattern);
+            --fill: url(#hex-pattern);
         }
-        #grid-container {
+        #canvas, #grid-container, #svg {
             height: 471px;
             overflow: hidden;
             padding: 10px;
@@ -33,6 +33,9 @@
             transform: scale( var( --scale ) );
             stroke-width: var( --stroke );
         }
+        #canvas, #svg {
+            position: absolute;
+        }
         #grid {
             fill: var( --fill );
         }
@@ -42,6 +45,12 @@
         <fieldset>
             <legend>Game</legend>
             <div id="grid-container">
+                <div id="canvas">
+                    Some text here
+                    <div style="background: red; color: white; width: 50%; margin: auto;">
+                        And some more
+                    </div>
+                </div>
                 <svg id="svg">
                     <defs>
                         <pattern id='hex-pattern' width='17.3205080768' height='10' patternUnits='userSpaceOnUse'>
@@ -58,6 +67,7 @@
                     </defs>
                     <rect id="grid" width="100%" height="100%" stroke='none' />
                 </svg>
+
             </div>
         </fieldset>
         <script>

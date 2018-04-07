@@ -34,31 +34,17 @@ body > * {
     width: 100%;
 }
 
-#menubar {
-    padding: var( --min-padding );
-    margin-bottom: var( --min-margin );
-    min-height: var( --menu-height );
+svg {
+    /* height: 100%; */
+    /* width: 100%; */
 }
 
-#main {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
-    min-height: calc( 100vh - 3 * var( --menu-height ) );
-}
-
-#game {
-    flex: 1 1 calc( 100vmin - 3 * var( --menu-height ) );
-    margin: var( --min-margin );
-    min-height: calc( 100vh - 3 * var( --menu-height ) - var( --control-height ) );
-}
-
-#game > div {
-    text-align: center;
+#board {
+    overflow: hidden;
 }
 
 #canvas {
-    margin: auto;
+    position: absolute;
 }
 
 #control {
@@ -85,6 +71,39 @@ body > * {
     max-height: var( --label-height );
 }
 
+#footer {
+    padding: var( --min-padding );
+    margin-top: var( --min-margin );
+    min-height: var( --menu-height );
+    overflow: auto;
+}
+
+#footer code {
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+#game {
+    flex: 1 1 calc( 100vmin - 3 * var( --menu-height ) );
+    margin: var( --min-margin );
+    min-height: calc( 100vh - 3 * var( --menu-height ) - var( --control-height ) );
+    overflow: hidden;
+    position: relative;
+}
+
+#main {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    min-height: calc( 100vh - 3 * var( --menu-height ) );
+}
+
+#menubar {
+    padding: var( --min-padding );
+    margin-bottom: var( --min-margin );
+    min-height: var( --menu-height );
+}
+
 #tiling {
     display:inline;
     max-height: var( --tiling-height );
@@ -98,16 +117,4 @@ body > * {
     bottom: var( --tiling-shift );
     margin: var( --tiling-margin );
     position: relative;
-}
-
-#footer {
-    padding: var( --min-padding );
-    margin-top: var( --min-margin );
-    min-height: var( --menu-height );
-    overflow: auto;
-}
-
-#footer code {
-    padding-left: 2px;
-    padding-right: 2px;
 }

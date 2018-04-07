@@ -12,9 +12,6 @@
     --code-text: #ffffff;
     --code: #44444480;
     --footer-font: 200 small "Roboto Condensed", sans-serif;
-    --grid-image: var( --square-grid-image );
-    --grid-size: var( --square-grid-size );
-    --grid-position: var( --square-grid-position );
     --radio-checked: 6px solid #3b99fa;
     --radio-diameter: 14px;
     --radio-space: 5px;
@@ -36,20 +33,13 @@
 i.light {
     color: var( --code );
 }
-#menubar {
-    background: var( --red );
-    color: var( --red-text );
+svg * {
+    fill: none;
+    vector-effect: non-scaling-stroke;
 }
 
-#game {
-    background: #fff;
-    border: var( --button-border );
-}
-
-#canvas {
-    background-image: var( --grid-image );
-    background-position: var( --grid-position );
-    background-size: var( --grid-size );
+#board {
+    overflow: hidden;
 }
 
 #control {
@@ -69,14 +59,21 @@ i.light {
     outline: 0;
 }
 
+#control > input:active {
+    box-shadow: var( --whitish-inset ), var( --white-thick-shadow ), var( --whitish-thiner-shadow ), var( --whitish-thiner-shadow );
+    background: linear-gradient(top, #d1d1d1 0%, #ececec 100%);
+    outline: 0;
+}
+
 #control > input:hover {
     box-shadow: var( --white-inset ), var( --white-thin-shadow ), var( --whitish-thick-shadow ), var( --whitish-thicker-shadow );
     outline: 0;
 }
 
-#control > input:active {
-    box-shadow: var( --whitish-inset ), var( --white-thick-shadow ), var( --whitish-thiner-shadow ), var( --whitish-thiner-shadow );
-    background: linear-gradient(top, #d1d1d1 0%, #ececec 100%);
+
+#control > input:hover + span,
+#control > label:hover {
+    text-shadow: var( --whitish-thick-shadow ), var( --whitish-thicker-shadow );
     outline: 0;
 }
 
@@ -90,6 +87,46 @@ i.light {
     position: relative;
     bottom: 8px;
 }
+
+#control > label input[type="radio"]:hover,
+#control > label input[type="checkbox"]:hover {
+    box-shadow: var( --whitish-thick-shadow ), var( --whitish-thicker-shadow );
+    outline: 0;
+}
+
+#footer {
+    background: var( --blackish );
+    color: var( --blackish-text );
+    font: var( --footer-font );
+}
+
+#footer code {
+    border: var( --code-border );
+    background-color: var( --code );
+    color: var( --code-text );
+    font: var( --code-font );
+}
+
+#game {
+    background: #fff;
+    border: var( --button-border );
+}
+
+#hex {
+    font-weight: 500;
+    font-size: 160%;
+}
+
+#menubar {
+    background: var( --red );
+    color: var( --red-text );
+}
+
+#sqr {
+    font-weight: 500;
+    font-size: 160%;
+}
+
 #tiling input[type="radio"] {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -114,36 +151,7 @@ i.light {
     border: var( --button-border );
 }
 
-#sqr, #hex {
-    font-weight: 500;
-    font-size: 160%;
-}
 #tri {
     font-weight: 900;
     font-size: 120%;
-}
-
-#control > input:hover + span,
-#control > label:hover {
-    text-shadow: var( --whitish-thick-shadow ), var( --whitish-thicker-shadow );
-    outline: 0;
-}
-
-#control > label input[type="radio"]:hover,
-#control > label input[type="checkbox"]:hover {
-    box-shadow: var( --whitish-thick-shadow ), var( --whitish-thicker-shadow );
-    outline: 0;
-}
-
-#footer {
-    background: var( --blackish );
-    color: var( --blackish-text );
-    font: var( --footer-font );
-}
-
-#footer code {
-    border: var( --code-border );
-    background-color: var( --code );
-    color: var( --code-text );
-    font: var( --code-font );
 }

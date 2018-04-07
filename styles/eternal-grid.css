@@ -8,44 +8,19 @@
     *
     /!\ The font-size is a hint for the javascript engine, allowing to specify the real width of cells.
     */
-    --scale: 1;
-    --hexagon:
-        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' \
-            width='17.3205080768' height='10' stroke='#e0e0e0' stroke-width='1' fill='none' font-size='11.5470053879'>\
-            <path d='M 17.3205080768 5 H 11.5470053879 L 8.66025403784 0 2.88675134595 0 0 5 2.88675134595 10 M 8.66025403784 10 L 11.5470053879 5'/>\
-            </svg>");
-    --hexagon-grid-image:
-        var( --hexagon );
-    --hexagon-grid-size:
-        calc( var( --scale ) * 17.3205080768px ) calc( var( --scale ) * 10px);
-    --hexagon-grid-position:
-        .5px .5px;
 
-    --square:
-        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' \
-            width='10' height='10' stroke='#e0e0e0' stroke-width='1' fill='none' font-size='10'>\
-            <path d='M 0 0 H 10 V 10'/>\
-            </svg>");
-    --square-grid-image:
-        var( --square );
-    --square-grid-size:
-        calc( var( --scale ) * 10px ) calc( var( --scale ) * 10px);
-    --square-grid-position:
-        1px 0px;
+    --grid-fill: url(#hexagon-pattern);
 
-    --triangle:
-        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' \
-            width='17.3205080768' height='10' stroke='#e0e0e0' stroke-width='1' fill='none' font-size='8.66025403784px'>\
-            <path d='M 0 0 V 10 L 8.66025403784 5 Z'/>\
-            </svg>");
-    --triangle-grid-image:
-        var( --triangle ),
-        var( --triangle );
-    --triangle-grid-size:
-        calc( var( --scale ) * 17.3205080768px ) calc( var( --scale ) * 10px),
-        calc( var( --scale ) * 17.3205080768px ) calc( var( --scale ) * 10px);
-    --triangle-grid-position:
-        .5px 0px,
-        calc( var( --scale ) * 8.66025403784px ) calc( var( --scale ) * 5px );
-
+    --pattern-color: #e0e0e0;
+    --pattern-scale: .75;
+    --pattern-stroke: calc( 1px / var( --pattern-scale ) );
+}
+#hexagon-pattern, #square-pattern, #triangle-pattern {
+    transform: scale( var( --pattern-scale ) );
+    stroke-width: var( --pattern-stroke );
+    stroke: var( --pattern-color );
+}
+#grid-background {
+    fill: var( --grid-fill );
+    stroke: none;
 }
