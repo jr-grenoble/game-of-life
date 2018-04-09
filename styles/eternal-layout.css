@@ -76,11 +76,18 @@ svg {
     margin-top: var( --min-margin );
     min-height: var( --menu-height );
     overflow: auto;
+    display: flex;
+    flex-flow: row wrap;
 }
 
-#footer code {
-    padding-left: 2px;
-    padding-right: 2px;
+#footer > div {
+    flex: auto;
+    justify-content: space-between;
+    margin-left: var( --min-margin );
+    margin-right: var( --min-margin );
+    min-height: var( --menu-height );
+    /* max-height: var( --menu-height ); */
+    padding: var( --min-padding );
 }
 
 #game {
