@@ -28,9 +28,9 @@
     --min-margin: 0.08rem;
     --min-padding: 0.2rem;
     --popup-gutter: 1.5rem;
+    --select-width: 3rem;
     --tiling-height: 2.4rem;
     --tiling-shift: 2rem;
-    --universe-diameter: 3rem;
     box-sizing: border-box;
     overflow: hidden;
 }
@@ -72,7 +72,7 @@
     select {
         margin: auto;
         max-height: var( --button-height );
-        min-width: var( --universe-diameter );
+        min-width: var( --select-width );
         padding: var( --min-padding );
     }
 
@@ -83,7 +83,7 @@
 
     td select {
         padding-top: 0;
-        padding-left: calc( var( --universe-diameter ) / 3 );
+        padding-left: calc( var( --select-width ) / 3 );
     }
 }
 
@@ -194,8 +194,9 @@
         top: calc( -0.8 * var( --tiling-shift ) );
     }
 
-    #universe {
-        height: var( --universe-diameter );
-        width: var( --universe-diameter );
+    #universe { /* we hardcode dimensions here, as they are also hardcoded in HTML: the SVG square pattern is 10x10px */
+        padding: 0;
+        height: 61px; /* must be an integer multiple of the SVG square pattern height + 1 px */
+        width: 61px; /* must be an integer multiple of the SVG square pattern width + 1 px */
     }
 }
