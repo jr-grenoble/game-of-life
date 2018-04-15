@@ -18,6 +18,7 @@
     transform: scale( var( --pattern-scale ) );
     stroke-width: var( --pattern-stroke );
     stroke: var( --pattern-color );
+    stroke-opacity: calc( 0.2 + var( --pattern-scale ) );
 }
 #grid-background {
     fill: var( --grid-fill );
