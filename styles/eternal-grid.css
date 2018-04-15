@@ -6,7 +6,6 @@
     stroke width must be scaled down proportionally.
     To make the grid transparent or change its color, change the svg stroke color.
     *
-    /!\ The font-size is a hint for the javascript engine, allowing to specify the real width of cells.
     */
 
     --grid-fill: url(#hexagon-pattern);

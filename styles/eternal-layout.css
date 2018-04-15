@@ -1,127 +1,201 @@
-/* variable declarations */
+/* ==| Overall structure |=====================================================
+ *
+ * This CSS file only deals with layout.
+ *
+ * It defines global variables for anything that repeats itself,
+ * e.g. margins, padding, minimum heights…
+ * Then it defines rules for pseudo classes, classes, attributes, tags,
+ * as well as identified elements.
+ *
+ * When the same rule applies to multiple elements, the rule is turned into
+ * variables and applied to individual elements, so that we can list classes,
+ * elements,… in lexicographic order.
+**/
+
+/* ==| Variables |=============================================================
+ * We first define generic variables, e.g. for dimensions.
+ * Then we assign these generic variables to different type of elements
+ * (e.g. buttons).
+**/
 :root {
-    --button-margin: 8px;
-    --button-height: 1.5em;
-    --button-width: 3.5em;
-    --label-height: calc( var( --button-height ) + 1em );
-    --label-width: calc( var( --button-width ) - 1em );
-    --control-height: calc( var( --button-width ) * 4 + 2em );
-    --menu-height: 3em;
-    --min-margin: .5ex;
-    --min-padding: 2px;
-    --tiling-height: 2.55em;
-    --tiling-margin: 4px;
-    --tiling-padding: 8.5px;
-    --tiling-shift: .95em;
+    --button-height: 1.5rem;
+    --button-margin: 0.5rem;
+    --button-width: 3.5rem;
+    --control-height: calc( var( --button-width ) * 5 + 3rem);
+    --label-height: calc( var( --button-height ) + 1rem );
+    --label-width: calc( var( --button-width ) - 1rem );
+    --menu-height: 3rem;
+    --min-margin: 0.08rem;
+    --min-padding: 0.2rem;
+    --popup-gutter: 1.5rem;
+    --tiling-height: 2.4rem;
+    --tiling-shift: 2rem;
+    --universe-diameter: 3rem;
     box-sizing: border-box;
-}
-
-html {
     overflow: hidden;
 }
 
-body {
-    display: flex;
-    flex-flow: column wrap;
-    justify-content: space-between;
-    height: 100%;
-    margin: 0;
-    width: 100%;
+/* ==| Tags |==================================================================
+ * We then define generic tag layout.
+**/
+@supports ( --tags: all ) {
+    body {
+        display: flex;
+        flex-flow: column wrap;
+        justify-content: space-between;
+        height: 100%;
+        margin: 0;
+        width: 100%;
+    }
+
+    body > :not(#frosted) {
+        flex: 1 1 var( --menu-height );
+        width: 100%;
+    }
+
+    input {
+        flex: 0 1 0;
+        margin: var( --button-margin );
+        min-width: var( --button-width );
+        max-height: var( --button-height );
+        white-space: nowrap;
+    }
+
+    label {
+        flex: 0 1 0;
+        margin: var( --button-margin );
+        min-width: var( --label-width );
+        max-height: var( --label-height );
+        white-space: nowrap;
+    }
+
+    select {
+        margin: auto;
+        max-height: var( --button-height );
+        min-width: var( --universe-diameter );
+        padding: var( --min-padding );
+    }
+
+    table {
+        margin: auto;
+        vertical-align: middle;
+    }
+
+    td select {
+        padding-top: 0;
+        padding-left: calc( var( --universe-diameter ) / 3 );
+    }
 }
 
-body > * {
-    flex: 1 1 var( --menu-height );
-    width: 100%;
-}
+@supports ( --identified-elements: all ) {
+    #cancel {
+        position: absolute;
+        right: var( --min-padding );
+    }
 
-svg {
-    /* height: 100%; */
-    /* width: 100%; */
-}
+    #canvas {
+        position: absolute;
+    }
 
-#board {
-    overflow: hidden;
-}
+    #control {
+        display: block flex;
+        flex-flow: row wrap;
+        flex: 1 1 var( --control-height );
+        justify-content: space-between;
+        margin: var( --min-margin );
+        min-height: var( --control-height );
+        overflow: auto;
+    }
 
-#canvas {
-    position: absolute;
-}
+    #footer {
+        display: flex;
+        flex-flow: row wrap;
+        margin-top: var( --min-margin );
+        min-height: var( --menu-height );
+        overflow: auto;
+        padding: var( --min-padding );
+    }
 
-#control {
-    display: block flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
-    flex: 1 1 var( --control-height );
-    margin: var( --min-margin );
-    min-height: var( --control-height );
-    overflow: auto;
-}
+    #footer > div {
+        flex: auto;
+        justify-content: space-between;
+        margin-left: var( --min-margin );
+        margin-right: var( --min-margin );
+        min-height: var( --menu-height );
+        padding: var( --min-padding );
+    }
 
-#control > input {
-    flex: 0 1 0;
-    margin: var( --button-margin );
-    min-width: var( --button-width );
-    max-height: var( --button-height );
-}
+    #frosted {
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        z-index: 100;
+    }
 
-#control > label {
-    flex: 0 1 0;
-    margin: var( --button-margin );
-    min-width: var( --label-width );
-    max-height: var( --label-height );
-}
+    #game {
+        flex: 1 1 calc( 100vmin - 3 * var( --menu-height ) );
+        margin: var( --min-margin );
+        min-height: calc( 100vh - 3 * var( --menu-height ) - var( --control-height ) );
+        overflow: hidden;
+        position: relative;
+    }
 
-#footer {
-    padding: var( --min-padding );
-    margin-top: var( --min-margin );
-    min-height: var( --menu-height );
-    overflow: auto;
-    display: flex;
-    flex-flow: row wrap;
-}
+    #main {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+        min-height: calc( 100vh - 3 * var( --menu-height ) );
+    }
 
-#footer > div {
-    flex: auto;
-    justify-content: space-between;
-    margin-left: var( --min-margin );
-    margin-right: var( --min-margin );
-    min-height: var( --menu-height );
-    /* max-height: var( --menu-height ); */
-    padding: var( --min-padding );
-}
+    #menubar {
+        margin-bottom: var( --min-margin );
+        min-height: var( --menu-height );
+        padding: var( --min-padding );
+    }
 
-#game {
-    flex: 1 1 calc( 100vmin - 3 * var( --menu-height ) );
-    margin: var( --min-margin );
-    min-height: calc( 100vh - 3 * var( --menu-height ) - var( --control-height ) );
-    overflow: hidden;
-    position: relative;
-}
+    #popup {
+        bottom: var( --menu-height );
+        left: 0;
+        margin: auto;
+        min-height: var( --control-height );
+        min-width: var( --control-height );
+        overflow: auto;
+        padding: var( --min-padding );
+        position: absolute;
+        right: 0;
+        top: var( --menu-height );
+        width: 50%;
+    }
 
-#main {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
-    min-height: calc( 100vh - 3 * var( --menu-height ) );
-}
+    #popup > div {
+        bottom: var( --popup-gutter );
+        display: block flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+        left: var( --popup-gutter );
+        margin: auto;
+        overflow: hidden;
+        position: absolute;
+        right: var( --popup-gutter );
+        top: var( --popup-gutter );
+    }
 
-#menubar {
-    padding: var( --min-padding );
-    margin-bottom: var( --min-margin );
-    min-height: var( --menu-height );
-}
+    #tiling {
+        display:inline-block;
+        max-height: var( --tiling-height );
+        position: relative;
+        top: var( --tiling-shift );
+    }
 
-#tiling {
-    display:inline;
-    max-height: var( --tiling-height );
-    padding: var( --min-padding );
-    padding-left: var( --tiling-padding );
-    padding-right: var( --tiling-padding );
-    position: relative;
-    top: var( --tiling-shift );
-}
-#tiling > label {
-    bottom: var( --tiling-shift );
-    margin: var( --tiling-margin );
-    position: relative;
+    #tiling > :not(legend) {
+        position: relative;
+        top: calc( -0.8 * var( --tiling-shift ) );
+    }
+
+    #universe {
+        height: var( --universe-diameter );
+        width: var( --universe-diameter );
+    }
 }

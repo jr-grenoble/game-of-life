@@ -13,12 +13,115 @@
         <!-- scripts are located at the end of the body -->
     </head>
     <body>
+        <!-- By default, the frosted div is hidden; it is also in absolute position 0,0 to cover the whole screen when visible -->
+        <div id="frosted">
+            <div id="popup">
+                <!-- all modal dialogs share a cancel button  -->
+                <i class="material-icons" id="cancel">cancel</i>
+                <!-- popup can expose various contents, driven by javascript (all are hidden by default) -->
+                <div id="settings">
+                    <!-- linear vs geometric scaling, scaling steps, grid color, trail coloring schemes, zoom shift -->
+                    <fieldset id="zoom-settings">
+                        <legend title="zoom settings">
+                            <i class="material-icons light">launch</i>
+                        </legend>
+                        <label>zoom settings:&nbsp;</label>
+                        <label for="scaling-mode" title="linear mode scale is 1 + step × (slider+shift); geometric mode scale is (1+step)^(slider+shift); where slider is the value of the zoom slider (between -2 and 2)">
+                            <select id="scaling-mode">
+                                <option value="linear" selected>linear</option>
+                                <option value="geometric">geometric</option>
+                            </select><span>&nbsp;mode</span><!-- keep span attached -->
+                        </label>
+                        <label for="scaling-step" title="linear or geometric (multiplicative) increment when using the zoom slider; see mode for formula">
+                            <input id="scaling-step" type="number" value="0.1" step="0.1"
+                            min="0.1" max="1"><span>step</span> <!-- keep span attached -->
+                        </label>
+                        <label for="scaling-shift" title="shift, i.e. value added to the zoom slider; see mode for formula">
+                            <input id="scaling-shift" type="number" value="2" step="1"
+                            min="-1" max="4"><span>shift</span><!-- keep span attached -->
+                        </label>
+                    </fieldset>
+                    <fieldset id="color-settings">
+                        <legend title="color settings">
+                            <i class="material-icons light">palette</i>
+                        </legend>
+                        <label>color settings:&nbsp;</label>
+                        <label for="grid-color" title="grid color">
+                            <input id="grid-color" type="color"
+                            value="#e0e0e0"><span>grid</span> <!-- keep span attached -->
+                        </label>
+                        <label for="trail-color" title="trail color gradient start">
+                            <input id="trail-color" type="color"
+                            value="#ff80c0"><span>trail</span> <!-- keep span attached -->
+                        </label>
+                    </fieldset>
+                    <!-- geometry i.e. side connectivity and effects such as bounce, drop or teleport -->
+                    <fieldset id="geometry-settings">
+                        <legend title="geometry settings">
+                            <i class="material-icons light">swap_vert</i><i class="material-icons light" style="position:absolute;left:.72em">swap_horiz</i>
+                        </legend>
+                        <label>geometry settings:</label>
+                        <table title="for each side of the game board, indicate whether cells drop off the edge (disappear) or reappear on the same edge (bouncing back) or on another edge (arrows indicate in which direction the cells come from after hitting the edge)">
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <select id="top-effect">
+                                            <option value="drop" title="disappear" selected>×</option>
+                                            <option value="top" title="bounce down from top">↓</option>
+                                            <option value="bottom" title="reappear from bottom">↑</option>
+                                            <option value="left" title="reappear from left side">→</option>
+                                            <option value="right" title="reappear from right side">←</option>
+                                        </select>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <select id="left-effect">
+                                            <option value="drop" title="disappear" selected>×</option>
+                                            <option value="top" title="reappear from top">↓</option>
+                                            <option value="bottom" title="reappear from bottom">↑</option>
+                                            <option value="left" title="bounce right from left side">→</option>
+                                            <option value="right" title="reappear from right side">←</option>
+                                        </select>
+                                    </td>
+                                    <td id="universe"></td>
+                                    <td>
+                                        <select id="right-effect">
+                                            <option value="drop" title="disappear" selected>×</option>
+                                            <option value="top" title="reappear from top">↓</option>
+                                            <option value="bottom" title="reappear from bottom">↑</option>
+                                            <option value="left" title="reappear from left side">→</option>
+                                            <option value="right" title="bounce left from right side">←</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <select id="bottom-effect">
+                                            <option value="drop" title="disappear" selected>×</option>
+                                            <option value="top" title="reappear from top">↓</option>
+                                            <option value="bottom" title="bounce up from bottom">↑</option>
+                                            <option value="left" title="reappear from left side">→</option>
+                                            <option value="right" title="reappear from right side">←</option>
+                                        </select>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
         <nav id="menubar">
             <i class="material-icons">menu</i> Menubar will go here eventually
         </nav>
         <section id="main">
             <fieldset id="game" title="game area">
-                <legend><i class="material-icons">games</i></legend>
+                <legend><i class="material-icons light">games</i></legend>
                 <div id="board">
                     <canvas id="canvas" width="100" height="100">
                         Use a modern browser (e.g. Chrome, Firefox, Mozilla) to display game.
@@ -42,21 +145,21 @@
                 </div>
             </fieldset>
             <fieldset id="control" title="control knobs">
-                <legend><i class="material-icons">tune</i></legend>
+                <legend><i class="material-icons light">tune</i></legend>
                 <!-- convert play to "pause" when playing -->
-                <input id="play" class="material-icons" type="button" title="play" value="play_arrow">
-                <input id="step" class="material-icons" type="button" title="step" value="skip_next">
-                <input id="clear" class="material-icons" type="button" title="clear" value="stop">
-                <input id="backup" class="material-icons" type="button" title="backup" value="file_download">
-                <input id="restore" class="material-icons" type="button" title="restore" value="file_upload">
-                <input id="config" class="material-icons" type="button" title="configuration (rules, colors)" value="settings">
-                <input id="help" class="material-icons" type="button" title="help" value="help">
+                <input type="button" id="play"    class="material-icons" value="play_arrow"     title="play">
+                <input type="button" id="step"    class="material-icons" value="skip_next"      title="step">
+                <input type="button" id="clear"   class="material-icons" value="stop"           title="clear" >
+                <input type="button" id="backup"  class="material-icons" value="cloud_upload"   title="backup">
+                <input type="button" id="restore" class="material-icons" value="cloud_download" title="restore" >
+                <input type="button" id="config"  class="material-icons" value="settings"       title="configuration (rules, colors)">
+                <input type="button" id="help"    class="material-icons" value="help"           title="help">
                 <label for="trail" class="material-icons" title="trail">
-                    <input id="trail" type="checkbox" value="on"
+                    <input type="checkbox" id="trail"  value="on"
                     checked><span>line_weight</span>
                 </label>
                 <label for="speed" class="material-icons" title="speed">
-                    <input id="speed" type="range" value="0" min="-2" max="2"
+                    <input type="range" id="speed" value="0" min="-2" max="2"
                     list="ticks"><datalist id="ticks">
                         <option value="-2">
                         <option value="-1">
@@ -68,25 +171,22 @@
                 <fieldset id="tiling" title="tiling">
                     <legend><i class="material-icons light">view_comfy</i></legend>
                     <label for="triangle" title="triangular tiling">
-                        <input id="triangle" type="radio" name="tiling"
-                        value="triangle"><span id="tri">&#x25b3;</span>
+                        <input type="radio" id="triangle" name="tiling" value="triangle"><span id="tri">&nbsp;&#x25b3;</span>
                     </label>
                     <label for="square" title="square tiling">
-                        <input id="square" type="radio" name="tiling"
-                        value="square" checked><span id="sqr">&#x2395;</span>
+                        <input type="radio" id="square" name="tiling" value="square" checked><span id="sqr">&nbsp;&#x2395;</span>
                     </label>
                     <label for="hexagon" title="hexagonal tiling">
-                        <input id="hexagon" type="radio" name="tiling"
-                        value="hexagon"><span id="hex">&#x2394;</span>
+                        <input type="radio" id="hexagon" name="tiling" value="hexagon"><span id="hex">&nbsp;&#x2394;</span>
                     </label>
                 </fieldset>
 
                 <label for="grid" class="material-icons" title="grid">
-                    <input id="grid" type="checkbox" value="on"
+                    <input type="checkbox" id="grid" value="on"
                     checked><span>border_clear</span>
                 </label>
                 <label for="zoom" class="material-icons" title="zoom">
-                    <input id="zoom" type="range" value="0" min="-3" max="3" step="1"
+                    <input type="range" id="zoom" value="0" min="-3" max="3" step="1"
                     list="scale"><datalist id="scale">
                         <option value="-3">
                         <option value="-2">

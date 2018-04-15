@@ -1,157 +1,306 @@
-/* variable declarations */
-:root {
-    --blackish-text: #ffffff;
+/* ==| Overall structure |=====================================================
+ *
+ * This CSS file only deals with looks, not layout.
+ * That is, colors, borders, fonts… Note that font-size and their equivalent
+ * (e.g. for redesigned inputs) fits here as opposed to in CSS layout.
+ *
+ * It defines global variables for anything that repeats itself,
+ * e.g. colors found in multiple places or border styles.
+ * Then it defines rules for pseudo classes, classes, attributes, tags,
+ * as well as identified elements.
+ *
+ * When the same rule applies to multiple elements, the rule is turned into
+ * variables and applied to individual elements, so that we can list classes,
+ * elements,… in lexicographic order.
+**/
+
+/* ==| Variables |=============================================================
+ * We first define generic variables, e.g. for colors, along with derivatives,
+ * e.g. for the text color corresponding to a given color.
+ * Then we assign these generic variables to different type of elements
+ * (e.g. buttons).
+**/
+:root { /* variables */
+    /* ==| Color names |=======================================================
+     * Note that in the future, derived color names such as --foo-light or
+     * --foo-text should be derived from plain color --foo by applying filters.
+     * Right now (2018-04-14), filters are only available for full elements,
+     * not for borders, backgrounds, text…
+    **/
     --blackish: #262626;
-    --button-border: 1px solid #aaaaaa;
-    --button-border-radius: 0.25em;
-    --button-font-size: 18px;
-    --button-text: #000000;
-    --button: #cccccc;
-    --code-border: 1px #ffffff80 dashed;
-    --code-font: smaller "Roboto Mono", monospace;
-    --code-text: #ffffff;
-    --code: #44444480;
-    --footer-font: 200 small "Roboto Condensed", sans-serif;
-    --radio-checked: 6px solid #3b99fa;
-    --radio-diameter: 14px;
-    --radio-space: 5px;
-    --radio-unchecked: 1px solid #999999;
-    --red-text: #ffffff;
+    --blackish-text: #ffffff;
+    --blue: #3b99fa; /* currently not used */
+    --blue-text: #ffffff; /* currently not used */
+    --blue-light: #7fbeff; /* currently not used */
+    --grey: #999999;
+    --grey-light: #aaaaaa;
+    --pink: #ff41a0;
+    --pink-text: #ffffff;
+    --pink-dark: #be2d75;
+    --pink-light: #ff80c0;
     --red: #a30015;
-    --white-inset: 0px 2px 1px white inset;
-    --white-thick-shadow: 0px -2px 20px white;
-    --white-thin-shadow: 0px -2px 8px white;
-    --whitish-inset: 0px 1px 2px rgba(0, 0, 0, 0.5) inset;
-    --whitish-thick-shadow: 0px 2px 15px rgba(0, 0, 0, 0.25);
-    --whitish-thicker-shadow: 0px 8px 20px rgba(0, 0, 0, 0.25);
-    --whitish-thiner-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    --whitish-thin-shadow: 0px 8px 10px rgba(0, 0, 0, 0.1);
-    font-family: Roboto, sans-serif;
-    font-weight: lighter;
+    --red-text: #ffffff;
+    /* ==| Color assignmnents |================================================
+    **/
+    --button: var( --pink );
+    --button-foreground: var( --pink-dark );
+    --button-background: var( --pink-light );
+    --button-text: var( --pink-text );
+    --field: var( --grey-light );
+    --footer: var( --blackish );
+    --footer-text: var( --blackish-text );
+    --menu: var( --red );
+    --menu-text: var( --red-text );
+    --unchecked: var( --field );
+    /* ==| Border assignmnents |===============================================
+    **/
+    --button-border: 1px solid var( --button-background );
+    --button-border-radius: 0.25em;
+    --button-border-thick: 2px solid var( --button-background );
+    --check-border: var( --field-border );
+    --field-border: 1px solid var( --field );
+    /* ==| Fonts |=============================================================
+    **/
+    --icon: "Material Icons";
+    --mono: "Roboto Mono", monospace;
+    --sans: "Roboto", sans-serif;
+    --serif: "Roboto Slab Light", serif;
+    --tight: "Roboto Condensed Light", sans-serif;
+    /* ==| Font assignmnents |=================================================
+    **/
+    --button-font-size: large;
+    --code-font: normal small var( --mono );
+    --default-font: lighter medium var( --sans );
+    --footer-font: var( --tight-font );
+    --icon-font: normal 1.25rem var( --icon );
+    --label-font: var( --tight-font );
+    --tight-font: lighter small var( --tight );
+    --select-font: bolder normal var( --mono );
+    /* ==| Shadow assignmnents |===============================================
+    **/
+    --button-text-shadow: -1px -1px 1px var( --button-foreground ), 1px 1px 1px var( --button-background );
+    --hover-shadow: var( --grey );
+    --thick-shadow: 0px 8px 20px var( --hover-shadow );
+    --thin-shadow: 0px 2px 15px var( --hover-shadow );
+    --hover-box-shadow: var( --thin-shadow );
+    --hover-text-shadow: var( --thin-shadow ), var( --thick-shadow );
+    /* ==| Checkboxes and radio buttons |======================================
+    **/
+    --check-size: 1.5em;
 }
 
-i.light {
-    color: var( --code );
-}
-svg * {
-    fill: none;
-    vector-effect: non-scaling-stroke;
+/* ==| Pseudo-classes and classes |============================================
+ * We handle generic pseudo classes first
+**/
+@supports ( --pseudo-classes: first ) {
+    :active, :focus {
+        outline: 0;
+    }
+
+    :enabled {
+        transition: box-shadow 0.25s ease, text-shadow 0.25s ease;
+    }
+
+    :enabled:hover {
+        box-shadow: var( --hover-box-shadow );
+    }
+
+    :enabled:hover > legend {
+        text-shadow: var( --hover-box-shadow );
+    }
+
+    :enabled:hover > legend > i.light {
+        color: var( --blackish )!important;
+    }
+
+    :root {
+        cursor: default!important;
+        font: var( --default-font );
+        outline: 0;
+        overflow: hidden;
+    }
 }
 
-#board {
-    overflow: hidden;
+@supports ( --classes: next ) {
+    .light {
+        color: var( --grey-light );
+    }
 }
 
-#control {
-    border: var( --button-border );
-}
-#control * {
-    transition: box-shadow 0.5s;
-}
-#control > input {
-    background-color: var( --button );
-    border: var( --button-border );
-    border-radius: var( --button-border-radius );
-    box-shadow: var( --white-inset ), var( --white-thin-shadow ), var( --whitish-thiner-shadow ), var( --whitish-thin-shadow );
-    color: var( --button-text );
-    font-size: var( --button-font-size )!important;
-    text-shadow: 0px 2px 0px #fff;
-    outline: 0;
+/* ==| Attributes and tags |===================================================
+ * We handle attributes first, then generic tags, then tags with siblings.
+ * In practice, attributes correspond to form elements, such as input, select or
+ * similar tags.
+**/
+@supports ( --attributes: first ) {
+    [type="button"] {
+        background-color: var( --button );
+        border: var( --button-border );
+        border-radius: var( --button-border-radius );
+        color: var( --button-text );
+        font-size: var( --button-font-size )!important;
+        text-shadow: var( --button-text-shadow );
+    }
+
+    [type="checkbox"],
+    [type="radio"] {
+        display: none;
+    }
+
+    [type="checkbox"] ~ span::before,
+    [type="radio"] ~ span::before {
+        color: var( --unchecked );
+        content: "check_box_outline_blank";
+        display: inline-block;
+        font: var( --icon-font );
+    }
+
+    [type="checkbox"] ~ span::before {
+        content: "check_box_outline_blank";
+    }
+
+    [type="checkbox"]:checked ~span::before,
+    [type="radio"]:checked ~span::before {
+        color: var( --button );
+    }
+
+    [type="checkbox"]:checked ~span::before {
+        content: "check_box";
+    }
+
+    [type="radio"] ~ span::before {
+        content: "radio_button_unchecked";
+    }
+
+    [type="radio"]:checked ~ span::before {
+        content: "radio_button_checked";
+    }
+
+    [type="range"] {
+        /* let's destroy all regular appearance */
+        -webkit-appearance: none;
+        appearance: none;
+        background: transparent;
+    }
+
+    [type="range"] {
+        box-shadow: none!important;
+    }
+
+    [type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        border: var( --button-border );
+        border-radius: 50%;
+        background-color: var( --button );
+        height: var( --check-size );
+        position: relative;
+        top: calc( -0.5 * var( --check-size ) );
+        width: var( --check-size );
+    }
+
+    [type=range]::-webkit-slider-thumb:hover,
+    [type=range]::-webkit-slider-runnable-track:hover {
+        box-shadow: var( --hover-box-shadow )!important;
+    }
+
+    [type=range]::-webkit-slider-runnable-track {
+        background: var( --field );
+        border-radius: 50%;
+        height: 1px;
+    }
 }
 
-#control > input:active {
-    box-shadow: var( --whitish-inset ), var( --white-thick-shadow ), var( --whitish-thiner-shadow ), var( --whitish-thiner-shadow );
-    background: linear-gradient(top, #d1d1d1 0%, #ececec 100%);
-    outline: 0;
+@supports ( --tags: next ) {
+    fieldset {
+        border: var( --field-border );
+    }
+
+    label {
+        display: inline-block;
+        font: var( --label-font );
+        position: relative;
+        top: .3em;
+    }
+
+    label:hover {
+        text-shadow: var( --hover-text-shadow );
+    }
+
+    select {
+        -webkit-appearance: none;
+        appearance: none;
+    }
+
+    td select {
+        font-size: 110%;
+    }
+
+    table, td, tr {
+        border: none;
+        text-align: center;
+    }
+
+    svg * {
+        fill: none;
+        vector-effect: non-scaling-stroke;
+    }
 }
 
-#control > input:hover {
-    box-shadow: var( --white-inset ), var( --white-thin-shadow ), var( --whitish-thick-shadow ), var( --whitish-thicker-shadow );
-    outline: 0;
+@supports ( --tags-with-siblings: last ) {
+    input:hover ~ span , /* this selects span elements that are after a hovered input */
+    input ~ span:hover { /* this selects hovered span elements that are after an input */
+        text-shadow: var( --hover-text-shadow );
+    }
 }
 
+/* ==| Elements |============================================================
+ * We now handle individual elements
+**/
+@supports ( --identified-elements: all ) {
+    #cancel:hover {
+        text-shadow: var( --hover-box-shadow );
+    }
+    #footer {
+        background: var( --footer );
+        color: var( --footer-text );
+        font: var( --footer-font );
+    }
 
-#control > input:hover + span,
-#control > label:hover {
-    text-shadow: var( --whitish-thick-shadow ), var( --whitish-thicker-shadow );
-    outline: 0;
-}
+    #frosted {
+        background-color: rgba(0,0,0,.5);
+        visibility: hidden;
+    }
 
-#control > label {
-    white-space: nowrap!;
-    position: relative;
-    top: 6px;
-}
-#control > label input[type="checkbox"] {
-    white-space: nowrap;
-    position: relative;
-    bottom: 8px;
-}
+    #game {
+        background: white;
+    }
 
-#control > label input[type="radio"]:hover,
-#control > label input[type="checkbox"]:hover {
-    box-shadow: var( --whitish-thick-shadow ), var( --whitish-thicker-shadow );
-    outline: 0;
-}
+    #hex { /* see hex, sqr and tri together */
+        font-size: 2.5em;
+    }
 
-#footer {
-    background: var( --blackish );
-    color: var( --blackish-text );
-    font: var( --footer-font );
-}
+    #menubar {
+        background: var( --menu );
+        color: var( --menu-text );
+    }
 
-#footer code {
-    border: var( --code-border );
-    background-color: var( --code );
-    color: var( --code-text );
-    font: var( --code-font );
-}
+    #popup {
+        background: white;
+        box-shadow: var( --hover-box-shadow );
+    }
 
-#game {
-    background: #fff;
-    border: var( --button-border );
-}
+    #popup > div {
+        visibility: hidden;
+    }
 
-#hex {
-    font-weight: 500;
-    font-size: 160%;
-}
+    #sqr { /* see hex, sqr and tri together */
+        font-size: 2.5em;
+    }
 
-#menubar {
-    background: var( --red );
-    color: var( --red-text );
-}
-
-#sqr {
-    font-weight: 500;
-    font-size: 160%;
-}
-
-#tiling input[type="radio"] {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    border: var( --radio-unchecked );
-    border-radius: 50%;
-    height: var( --radio-diameter );
-    margin-right: var( --radio-space );
-    outline: none;
-    position: relative;
-    top: 3px;
-    transition: 0.25s all linear;
-    width: var( --radio-diameter );
-    white-space: nowrap;
-}
-
-#tiling input[type="radio"]:checked {
-    border: var( --radio-checked );
-}
-
-#tiling {
-    border: var( --button-border );
-}
-
-#tri {
-    font-weight: 900;
-    font-size: 120%;
+    #tri { /* see hex, sqr and tri together */
+        font-size: 2em;
+    }
+    #universe {
+        border: var( --field-border );
+    }
 }
