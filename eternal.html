@@ -145,12 +145,12 @@
                             <legend><i class="material-icons light">blur_on</i></legend>
                             <label for="born" title="number of cells needed in the neighbourhood of an empty cell to get it born">
                                 <input type="text" id="born" value="3"
-                                    placeholder="0;2-5" pattern="\d{1,2}(-\d{1,2})?(;\d{1,2}(-\d{1,2})?)*"><span
+                                    placeholder="0,2-5" pattern="\s*\d{1,2}(\s*-\s*\d{1,2})?(\s*,\s*\d{1,2}(\s*-\s*\d{1,2})?)*\s*(,|-)?\s*"><span
                                     class="number-list-validity"></span><span>&nbsp;birth</span>
                             </label>
                             <label for="survive" title="number of cells needed in the neighbourhood of a live cell to get it to survive">
                                 <input type="text" id="survive" value="2-3"
-                                    placeholder="0;2-5" pattern="\d{1,2}(-\d{1,2})?(;\d{1,2}(-\d{1,2})?)*"><span
+                                    placeholder="0,2-5" pattern="\s*\d{1,2}(\s*-\s*\d{1,2})?(\s*,\s*\d{1,2}(\s*-\s*\d{1,2})?)*\s*(,|-)?\s*"><span
                                     class="number-list-validity" ></span><span>&nbsp;survival</span>
                             </label>
                         </fieldset>
