@@ -35,6 +35,26 @@
     overflow: hidden;
 }
 
+/* ==| Classes |===============================================================
+ * We define classes layout first.
+**/
+@supports ( --classes: first ) {
+    .slider-value {
+        display: inline-block;
+        min-width: 1rem;
+        text-align: center;
+    }
+}
+
+/* ==| Attributes |============================================================
+ * We define attributes layout next.
+**/
+@supports ( --attributes: next ) {
+    [type="range"] {
+        max-width: calc( var( --select-width ) * 2 );
+    }
+}
+
 /* ==| Tags |==================================================================
  * We then define generic tag layout.
 **/
@@ -51,6 +71,10 @@
     body > :not(#frosted) {
         flex: 1 1 var( --menu-height );
         width: 100%;
+    }
+
+    canvas {
+        position: absolute;
     }
 
     input {
@@ -87,14 +111,13 @@
     }
 }
 
+/* ==| Identified elements |===================================================
+ * Last we get to specific elements
+**/
 @supports ( --identified-elements: all ) {
     #cancel {
         position: absolute;
         right: var( --min-padding );
-    }
-
-    #canvas {
-        position: absolute;
     }
 
     #control {
@@ -142,6 +165,11 @@
         position: relative;
     }
 
+    #grid-neighbourhood {
+        margin: auto;
+        margin-bottom: var( --button-margin );
+    }
+
     #main {
         display: flex;
         flex-flow: row wrap;
@@ -161,7 +189,7 @@
         margin: auto;
         min-height: var( --control-height );
         min-width: var( --control-height );
-        overflow: auto;
+        overflow: hidden;
         padding: var( --min-padding );
         position: absolute;
         right: 0;
@@ -194,9 +222,4 @@
         top: calc( -0.8 * var( --tiling-shift ) );
     }
 
-    #universe { /* we hardcode dimensions here, as they are also hardcoded in HTML: the SVG square pattern is 10x10px */
-        padding: 0;
-        height: 61px; /* must be an integer multiple of the SVG square pattern height + 1 px */
-        width: 61px; /* must be an integer multiple of the SVG square pattern width + 1 px */
-    }
 }

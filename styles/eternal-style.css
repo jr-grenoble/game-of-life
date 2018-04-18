@@ -125,6 +125,11 @@
     .light {
         color: var( --grey-light );
     }
+
+    .slider-value {
+        font: var( --tight-font );
+        color: var( --grey-light );
+    }
 }
 
 /* ==| Attributes and tags |===================================================
@@ -159,12 +164,12 @@
         content: "check_box_outline_blank";
     }
 
-    [type="checkbox"]:checked ~span::before,
-    [type="radio"]:checked ~span::before {
+    [type="checkbox"]:checked ~ span::before,
+    [type="radio"]:checked ~ span::before {
         color: var( --button );
     }
 
-    [type="checkbox"]:checked ~span::before {
+    [type="checkbox"]:checked ~ span::before {
         content: "check_box";
     }
 
@@ -208,6 +213,17 @@
         border-radius: 50%;
         height: 1px;
     }
+
+    [type=text]:invalid + span.number-list-validity:after {
+      content: '✖';
+      color: #ff0000;
+    }
+
+    [type=text]:valid + span.number-list-validity:after {
+      content: '✓';
+      color: #0099ff;
+    }
+
 }
 
 @supports ( --tags: next ) {
@@ -252,6 +268,7 @@
         text-shadow: var( --hover-text-shadow );
     }
 }
+
 
 /* ==| Elements |============================================================
  * We now handle individual elements
@@ -299,8 +316,5 @@
 
     #tri { /* see hex, sqr and tri together */
         font-size: 2em;
-    }
-    #universe {
-        /* border: var( --field-border ); */
     }
 }
