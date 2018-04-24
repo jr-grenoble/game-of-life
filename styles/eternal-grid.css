@@ -7,10 +7,10 @@
     To make the grid transparent or change its color, change the svg stroke color.
     *
     */
-    --center-top-left: calc( ( 1 + var( --neighbourhood-range ) ) * 100% / ( 2 * var( --neighbourhood-range ) + 3 ) + var( --pattern-stroke ) );
+    --center-top-left: calc( ( 1 + var( --neighborhood-range ) ) * 100% / ( 2 * var( --neighborhood-range ) + 3 ) + var( --pattern-stroke ) );
     --grid-fill: url(#hexagon-pattern);
-    --neighbourhood-range: 1;
-    --neighbourhood-side: calc( ( 2 * var( --neighbourhood-range ) + 3 ) * 10px * var( --pattern-scale ) + var( --pattern-stroke ) );
+    --neighborhood-range: 1;
+    --neighborhood-side: calc( ( 2 * var( --neighborhood-range ) + 3 ) * 10px * var( --pattern-scale ) + var( --pattern-stroke ) );
     --pattern-color: #e0e0e0;
     --pattern-scale: .75;
     --pattern-stroke: calc( 1px / var( --pattern-scale ) );
@@ -40,10 +40,10 @@
     width: calc( 50px * var( --pattern-scale ) + var( --pattern-stroke ) );
 }
 
-#grid-neighbourhood {
+#grid-neighborhood {
     background-color: var( --trail-color );
-    height: var( --neighbourhood-side );
-    width: var( --neighbourhood-side );
+    height: var( --neighborhood-side );
+    width: var( --neighborhood-side );
 }
 
 #hexagon-pattern, #square-pattern, #triangle-pattern {
@@ -53,12 +53,12 @@
     stroke-opacity: calc( 0.25 + 3 * var( --pattern-scale ) / 4 );
 }
 
-#neighbourhood-canvas {
-    height: var( --neighbourhood-side );
-    width: var( --neighbourhood-side );
+#neighborhood-canvas {
+    height: var( --neighborhood-side );
+    width: var( --neighborhood-side );
 }
 
-#neighbourhood-viz {
+#neighborhood-viz {
     fill: url(#square-pattern);
     stroke: var( --pattern-color );
 }

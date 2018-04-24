@@ -165,7 +165,7 @@
         position: relative;
     }
 
-    #grid-neighbourhood {
+    #grid-neighborhood {
         margin: auto;
         margin-bottom: var( --button-margin );
     }

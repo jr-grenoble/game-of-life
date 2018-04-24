@@ -125,11 +125,11 @@
                         </fieldset>
                     </div>
                     <div id="life-rules">
-                        <fieldset title="neighbourhood rules">
+                        <fieldset title="neighborhood rules">
                             <legend><i class="material-icons light">grid_on</i></legend>
-                            <label>neighbourhood:&nbsp;</label>
-                            <label for="neighbourhood" title="neighbourhood mode is either Moore (corners count) or Von Neumann (corners don't count)">
-                                <select id="neighbourhood">
+                            <label>neighborhood:&nbsp;</label>
+                            <label for="neighborhood" title="neighborhood mode is either Moore (corners count) or Von Neumann (corners don't count)">
+                                <select id="neighborhood">
                                     <option value="Moore" selected>Moore</option>
                                     <option value="Von Neumann">Von Neumann</option>
                                 </select><span>&nbsp;mode</span><!-- keep span attached -->
@@ -138,25 +138,25 @@
                                 <span class="slider-value" id="range-value">1
                                 </span><input type="range" id="range" value="1" min="1" max="3" step="1"><span>range</span> <!-- keep span attached -->
                             </label>
-                            <div id="grid-neighbourhood">
-                                <canvas id="neighbourhood-canvas" width="100" height="100">
+                            <div id="grid-neighborhood">
+                                <canvas id="neighborhood-canvas" width="100" height="100">
                                     Use a modern browser (e.g. Chrome, Firefox, Mozilla) to display game.
                                 </canvas>
-                                <svg id="neighbourhood-svg" width="100%" height="100%">
+                                <svg id="neighborhood-svg" width="100%" height="100%">
                                     <rect id="center-cell" class="square-cell"/>
-                                    <rect id="neighbourhood-viz" width="100%" height="100%" fill="url(#square-pattern)"/>
+                                    <rect id="neighborhood-viz" width="100%" height="100%" fill="url(#square-pattern)"/>
                                 </svg>
                             </div>
                         </fieldset>
                         <fieldset title="cell rules">
-                            <label>neighbourhood cells needed for:<br /></label>
+                            <label>neighborhood cells needed for:<br /></label>
                             <legend><i class="material-icons light">blur_on</i></legend>
-                            <label for="born" title="number of cells needed in the neighbourhood of an empty cell to get it born">
+                            <label for="born" title="number of cells needed in the neighborhood of an empty cell to get it born">
                                 <input type="text" id="born" value="3"
                                     placeholder="0,2-5" pattern="\s*\d{1,2}(\s*-\s*\d{1,2})?(\s*,\s*\d{1,2}(\s*-\s*\d{1,2})?)*\s*(,|-)?\s*"><span
                                     class="number-list-validity"></span><span>&nbsp;birth</span>
                             </label>
-                            <label for="survive" title="number of cells needed in the neighbourhood of a live cell to get it to survive">
+                            <label for="survive" title="number of cells needed in the neighborhood of a live cell to get it to survive">
                                 <input type="text" id="survive" value="2-3"
                                     placeholder="0,2-5" pattern="\s*\d{1,2}(\s*-\s*\d{1,2})?(\s*,\s*\d{1,2}(\s*-\s*\d{1,2})?)*\s*(,|-)?\s*"><span
                                     class="number-list-validity" ></span><span>&nbsp;survival</span>
