@@ -22,12 +22,6 @@
     width: calc( 10px * var( --pattern-scale ) - var( --pattern-stroke ) );
 }
 
-#center-cell {
-    fill: #000;
-    x: var( --center-top-left );
-    y: var( --center-top-left );
-}
-
 #grid-background {
     fill: var( --grid-fill );
     stroke: none;

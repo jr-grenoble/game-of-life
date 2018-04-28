@@ -12,20 +12,20 @@
             box-sizing: border-box;
         }
         :root {
-            --scale: 2.75;
-            --stroke: calc( 1px / var( --scale ) );
+            --scale: 4;
+            --stroke: calc( 2px / var( --scale ) );
             --fill: url(#tri-pattern);
         }
         #canvas, #grid-container, #svg {
-            height: 471px;
+            height: 90%;
             overflow: hidden;
             padding: 10px;
-            width: 625px;
+            width: 90%;
         }
         svg {
             fill: none;
             height: 1920px;
-            stroke: #e0e0e0;
+            stroke: #888;
             vector-effect: non-scaling-stroke;
             width: 1920px;
         }
@@ -35,6 +35,7 @@
         }
         #canvas, #svg {
             position: absolute;
+            top: 2px; left: 2px;
         }
         #grid {
             fill: var( --fill );
@@ -42,34 +43,27 @@
         </style>
     </head>
     <body>
-        <fieldset>
-            <legend>Game</legend>
-            <div id="grid-container">
-                <div id="canvas">
-                    Some text here
-                    <div style="background: red; color: white; width: 50%; margin: auto;">
-                        And some more
-                    </div>
-                </div>
-                <svg id="svg">
-                    <defs>
-                        <pattern id='hex-pattern' width='17.3205080768' height='10' patternUnits='userSpaceOnUse'>
-                            <!-- 471x625 -->
-                            <path d='M 17.3205080768 5 H 11.5470053879 L 8.66025403784 0 2.88675134595 0 0 5 2.88675134595 10 M 8.66025403784 10 L 11.5470053879 5'/>
-                        </pattern>
-                        <pattern id='sqr-pattern' width='10' height='10' patternUnits='userSpaceOnUse'>
-                            <path d='M 0 0 H 10 H 0 V 10'/>
-                        </pattern>
-                        <pattern id='tri-pattern' width='17.3205080768' height='10' patternUnits='userSpaceOnUse'>
-                            <path d='M 0 0 V 10 L 17.3205080768 0 V 10 Z'/>
-                            <path d='M 8.66025403784 0 V 10'/>
-                        </pattern>
-                    </defs>
-                    <rect id="grid" width="100%" height="100%" stroke='none' />
-                </svg>
-
+        <div id="grid-container">
+            <div id="canvas">
             </div>
-        </fieldset>
+            <svg id="svg">
+                <defs>
+                    <pattern id='hex-pattern' width='17.3205080768' height='10' patternUnits='userSpaceOnUse'>
+                        <!-- 471x625 -->
+                        <path d='M 17.3205080768 5 H 11.5470053879 L 8.66025403784 0 2.88675134595 0 0 5 2.88675134595 10 M 8.66025403784 10 L 11.5470053879 5'/>
+                    </pattern>
+                    <pattern id='sqr-pattern' width='10' height='10' patternUnits='userSpaceOnUse'>
+                        <path d='M 0 0 H 10 H 0 V 10'/>
+                    </pattern>
+                    <pattern id='tri-pattern' width='17.3205080768' height='10' patternUnits='userSpaceOnUse'>
+                        <path d='M 0 0 V 10 L 17.3205080768 0 V 10 Z'/>
+                        <path d='M 8.66025403784 0 V 10'/>
+                    </pattern>
+                </defs>
+                <rect id="grid" x="-1" y="-1" width="100%" height="100%" stroke='none' />
+            </svg>
+
+        </div>
         <script>
             console.log ( document.getElementById ( "hex-pattern" ).width.baseVal.value );
         </script>
