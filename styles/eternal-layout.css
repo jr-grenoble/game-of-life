@@ -28,7 +28,9 @@
     --min-margin: 0.08rem;
     --min-padding: 0.2rem;
     --popup-gutter: 1.5rem;
-    --select-width: 3rem;
+    --tab-width: 2.7rem;
+    --tab-height: 2.4rem;
+    --tab-shift: -2.7rem;
     --tiling-height: 2.4rem;
     --tiling-shift: 2rem;
     box-sizing: border-box;
@@ -209,6 +211,66 @@
         right: var( --popup-gutter );
         top: var( --popup-gutter );
     }
+
+    #settings section {
+        display: block;
+        bottom: 0;
+        left: 0;
+        padding: var( --min-padding );
+        position: absolute;
+        right: 0;
+        top: var( --tab-height );
+        z-index: 10;
+    }
+
+    #settings section h1 {
+        display: inline-block;
+        height: var( --tab-height );
+        position: absolute;
+        top: var( --tab-shift );
+    }
+
+    #settings section h1 {
+        text-align: center;
+        width: var( --tab-width );
+    }
+
+    #settings section h1 a {
+        padding: var( --min-padding );
+    }
+
+    #settings section:nth-child(1) h1 {
+        left: calc( 1 * var( --tab-width ) );
+    }
+    #settings section:nth-child(2) h1 {
+        left: calc( 2 * var( --tab-width ) );
+    }
+    #settings section:nth-child(3) h1 {
+        left: calc( 3 * var( --tab-width ) );
+    }
+    #settings section:nth-child(4) h1 {
+        left: calc( 4 * var( --tab-width ) );
+    }
+    #settings section:nth-child(5) h1 {
+        left: calc( 5 * var( --tab-width ) );
+    }
+    #settings section:nth-child(6) h1 {
+        left: calc( 6 * var( --tab-width ) );
+    }
+    #settings section:nth-child(7) h1 {
+        left: calc( 7 * var( --tab-width ) );
+    }
+    #settings section:nth-child(8) h1 {
+        left: calc( 8 * var( --tab-width ) );
+    }
+    #settings section:nth-child(9) h1 {
+        left: calc( 9 * var( --tab-width ) );
+    }
+
+    #settings section:target {
+        z-index: 20;
+    }
+
 
     #tiling {
         display:inline-block;

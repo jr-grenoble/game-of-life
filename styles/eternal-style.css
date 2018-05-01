@@ -277,6 +277,7 @@
     #cancel:hover {
         text-shadow: var( --hover-box-shadow );
     }
+
     #footer {
         background: var( --footer );
         color: var( --footer-text );
@@ -309,6 +310,59 @@
     #popup > div {
         visibility: hidden;
     }
+
+
+    #settings i.material-icons {
+        font-style: normal;
+    }
+
+    #settings section {
+        background-color: white;
+        border: var( --field-border );
+    }
+
+    #settings  section:hover {
+        box-shadow: var( --hover-box-shadow );
+    }
+
+    #settings section h1 {
+        font: var( --icon-font );
+    }
+
+    #settings section h1 a {
+        background-color: white;
+        box-shadow: var( --thin-shadow );
+        color: var( --grey-light );
+    }
+
+    #settings section h1 a:hover {
+        box-shadow: var( --hover-text-shadow );
+        text-shadow: var( --hover-text-shadow );
+        color: var( --grey );
+    }
+
+    #settings section:target h1 {
+        background-color: white;
+    }
+
+    #settings section:target h1 a {
+        background-color: white;
+        box-shadow: none;
+        color: black;
+    }
+
+    #settings section:target h1::after,
+    #settings section:target h1::before {
+        background-color: white;
+        box-shadow: var( --hover-text-shadow );
+        color: white;
+        content: ".";
+        margin: auto;
+        position: relative;
+        top: -0.25rem;
+        z-index: -1;
+    }
+
 
     #sqr { /* see hex, sqr and tri together */
         font-size: 2.5em;
