@@ -222,9 +222,7 @@
                 <input type="button" id="backup"  class="material-icons" value="cloud_upload"   title="backup">
                 <input type="button" id="restore" class="material-icons" value="cloud_download" title="restore" >
                 <input type="button" id="config"  class="material-icons" value="settings"       title="configuration (zoom, colors, geometry)">
-
-
-
+                <br />
                 <label for="grid" class="material-icons" title="grid">
                     <input type="checkbox" id="grid" value="on" checked><span>border_clear</span>
                 </label>
@@ -236,6 +234,17 @@
                     <span class="slider-value" id="speed-value">0
                     </span><input type="range" id="speed" value="0" min="-2" max="2"><span>slow_motion_video</span>
                 </label>
+                <br />
+                <label><i class="material-icons">crop_free</i>&nbsp;<sup id="dimensions">${ this.width }, ${ this.height }</sup></label>
+                <label><i class="material-icons">my_location</i>&nbsp;<sup id="position">${ x },${ y }</sup></label>
+                <div id="position-watch">
+                    <canvas id="position-canvas" width="100" height="100" style="background-color:#efefef40">
+                        Use a modern browser (e.g. Chrome, Firefox, Mozilla) to display game.
+                    </canvas>
+                    <svg id="position-svg" width="100%" height="100%">
+                        <rect id="position-background" width="100%" height="100%"/>
+                    </svg>
+                </div>
             </fieldset>
         </section>
         <footer id="footer">

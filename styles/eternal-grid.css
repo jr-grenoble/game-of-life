@@ -22,7 +22,7 @@
     width: calc( 10px * var( --pattern-scale ) - var( --pattern-stroke ) );
 } */
 
-#grid-background {
+#grid-background, #position-background {
     fill: var( --grid-fill );
     stroke: none;
 }
@@ -36,6 +36,9 @@
 
 #grid-neighborhood {
     background-color: var( --trail-color );
+}
+
+#grid-neighborhood, #position-watch, #position-canvas {
     height: var( --neighborhood-side );
     width: var( --neighborhood-side );
 }

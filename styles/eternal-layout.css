@@ -263,4 +263,7 @@
         top: var( --popup-gutter );
     }
 
+    #position-watch {
+        margin: auto;
+    }
 }
