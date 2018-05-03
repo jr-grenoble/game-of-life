@@ -19,142 +19,169 @@
                 <!-- all modal dialogs share a cancel button  -->
                 <i class="material-icons" id="cancel">cancel</i>
                 <!-- popup can expose various contents, driven by javascript (all are hidden by default) -->
-                <div id="settings">
-                    <section id="zoom">
-                        <h1 title="zoom settings"><a href="#zoom"><i class="material-icons">launch</i></a></h1>
-                        <label>zoom:&nbsp;</label>
-                        <label for="scaling-mode" title="linear mode scale is 1 + step × (slider+shift); geometric mode scale is (1+step)^(slider+shift); where slider is the value of the zoom slider (between -2 and 2)">
-                            <select id="scaling-mode">
-                                <option value="linear" selected>linear</option>
-                                <option value="geometric">geometric</option>
-                            </select><span>&nbsp;mode</span><!-- keep span attached -->
-                        </label>
-                        <label for="scaling-step" title="linear or geometric (multiplicative) increment when using the zoom slider; see mode for formula">
-                            <span class="slider-value" id="scaling-step-value">0.1
-                            </span><input type="range" id="scaling-step" value="0.1" min="0.1" max="0.9" step="0.1"><span>step</span> <!-- keep span attached -->
-                        </label>
-                        <label for="scaling-shift" title="shift, i.e. value added to the zoom slider; see mode for formula">
-                            <span class="slider-value" id="scaling-shift-value">2
-                            </span><input type="range" id="scaling-shift" value="2" min="-1" max="4" step="1"><span>shift</span> <!-- keep span attached -->
-                        </label>
-                    </section>
-                    <section id="colors">
-                        <h1 title="color settings"><a href="#colors"><i class="material-icons">palette</i></a></h1>
-                        <label>colors:&nbsp;</label>
-                        <label for="grid-color" title="grid color">
-                            <input id="grid-color" type="color"
-                            value="#e0e0e0"><span>grid</span> <!-- keep span attached -->
-                        </label>
-                        <label for="live-color" title="live cell color">
-                            <input id="live-color" type="color"
-                            value="#000000"><span>cell</span> <!-- keep span attached -->
-                        </label>
-                        <label for="trail-color" title="trail color gradient start">
-                            <input id="trail-color" type="color"
-                            value="#ff80c0"><span>trail</span> <!-- keep span attached -->
-                        </label>
-                        <label for="alpha" title="transparency factor applied to previous trails (0 = fully transparent, 1 = fully opaque)">
-                            <span class="slider-value" id="alpha-value">0.5
-                            </span><input type="range" id="alpha" value="0.5" min="0.1" max="0.9" step="0.1"><span>trail transparency</span> <!-- keep span attached -->
-                        </label>
-                    </section>
-                    <section id="geometry">
-                        <h1 title="geometry settings"><a href="#geometry"><i class="material-icons">zoom_out_map</i></a></h1>
-                        <table title="for each side of the game board, indicate whether cells drop off the edge (disappear) or reappear on the same edge (bouncing back) or on another edge (arrows indicate in which direction the cells come from after hitting the edge)">
-                            <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td>
-                                        <select id="top-effect">
-                                            <option value="drop" title="disappear" selected>×</option>
-                                            <option value="top" title="bounce down from top">↓</option>
-                                            <option value="bottom" title="reappear from bottom">↑</option>
-                                            <option value="left" title="reappear from left side">→</option>
-                                            <option value="right" title="reappear from right side">←</option>
-                                        </select>
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td><label>geometry:</label></td>
-                                    <td>
-                                        <select id="left-effect">
-                                            <option value="drop" title="disappear" selected>×</option>
-                                            <option value="top" title="reappear from top">↓</option>
-                                            <option value="bottom" title="reappear from bottom">↑</option>
-                                            <option value="left" title="bounce right from left side">→</option>
-                                            <option value="right" title="reappear from right side">←</option>
-                                        </select>
-                                    </td>
-                                    <td id="universe">
-                                        <svg width="100%" height="100%">
-                                            <rect id="grid-geometry" width="100%" height="100%" fill="url(#square-pattern)"/>
-                                        </svg>
-                                    </td>
-                                    <td>
-                                        <select id="right-effect">
-                                            <option value="drop" title="disappear" selected>×</option>
-                                            <option value="top" title="reappear from top">↓</option>
-                                            <option value="bottom" title="reappear from bottom">↑</option>
-                                            <option value="left" title="reappear from left side">→</option>
-                                            <option value="right" title="bounce left from right side">←</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td>
-                                        <select id="bottom-effect">
-                                            <option value="drop" title="disappear" selected>×</option>
-                                            <option value="top" title="reappear from top">↓</option>
-                                            <option value="bottom" title="bounce up from bottom">↑</option>
-                                            <option value="left" title="reappear from left side">→</option>
-                                            <option value="right" title="reappear from right side">←</option>
-                                        </select>
-                                    </td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </section>
-                    <section id="neighborhood-rules">
-                        <h1 title="neighborhood rules"><a href="#neighborhood-rules"><i class="material-icons">grid_on</i></a></h1>
-                        <label>neighborhood:&nbsp;</label>
-                        <label for="neighborhood" title="neighborhood mode is either Moore (corners count) or Von Neumann (corners don't count)">
-                            <select id="neighborhood">
-                                <option value="Moore" selected>Moore</option>
-                                <option value="Von Neumann">Von Neumann</option>
-                            </select><span>&nbsp;mode</span><!-- keep span attached -->
-                        </label>
-                        <label for="range" title="range is the maximum distance from center cell">
-                            <span class="slider-value" id="range-value">1
-                            </span><input type="range" id="range" value="1" min="1" max="3" step="1"><span>range</span> <!-- keep span attached -->
-                        </label>
-                        <div id="grid-neighborhood">
-                            <canvas id="neighborhood-canvas" width="100" height="100">
-                                Use a modern browser (e.g. Chrome, Firefox, Mozilla) to display game.
-                            </canvas>
-                            <svg id="neighborhood-svg" width="100%" height="100%">
-                                <rect id="neighborhood-viz" width="100%" height="100%" fill="url(#square-pattern)"/>
-                            </svg>
+
+                <div class="tabs" id="settings">
+                    <div class="filler"></div>
+
+                    <div class="tab" id="zoom-pane" title="zoom settings">
+                        <input class="tabber" id="zoom-tab" name="config-tabs" type="radio" checked>
+                        <label for="zoom-tab"><i class="material-icons">zoom_in</i></label>
+                        <div class="tab-content">
+                            <label>zoom:&nbsp;</label>
+                            <label for="zoom" class="material-icons" title="zoom">
+                                <span class="slider-value" id="zoom-value">0</span><input type="range" id="zoom" value="0" min="-3" max="3" step="1"><span>zoom_in</span>
+                            </label>
+                            <label for="scaling-mode" title="linear mode scale is 1 + step × (slider+shift); geometric mode scale is (1+step)^(slider+shift); where slider is the value of the zoom slider (between -2 and 2)">
+                                <select id="scaling-mode">
+                                    <option value="linear" selected>linear</option>
+                                    <option value="geometric">geometric</option>
+                                </select><span>&nbsp;mode</span><!-- keep span attached -->
+                            </label>
+                            <label for="scaling-step" title="linear or geometric (multiplicative) increment when using the zoom slider; see mode for formula">
+                                <span class="slider-value" id="scaling-step-value">0.1
+                                </span><input type="range" id="scaling-step" value="0.1" min="0.1" max="0.9" step="0.1"><span>step</span> <!-- keep span attached -->
+                            </label>
+                            <label for="scaling-shift" title="shift, i.e. value added to the zoom slider; see mode for formula">
+                                <span class="slider-value" id="scaling-shift-value">2
+                                </span><input type="range" id="scaling-shift" value="2" min="-1" max="4" step="1"><span>shift</span> <!-- keep span attached -->
+                            </label>
                         </div>
-                    </section>
-                    <section id="cell-rules">
-                        <h1 title="cell rules"><a href="#cell-rules"><i class="material-icons">blur_on</i></a></h1>
-                        <label>neighborhood cells needed for:<br /></label>
-                        <label for="born" title="number of cells needed in the neighborhood of an empty cell to get it born">
-                            <input type="text" id="born" value="3"
-                                placeholder="0,2-5" pattern="\s*\d{1,2}(\s*-\s*\d{1,2})?(\s*,\s*\d{1,2}(\s*-\s*\d{1,2})?)*\s*(,|-)?\s*"><span
-                                class="number-list-validity"></span><span>&nbsp;birth</span>
-                        </label>
-                        <label for="survive" title="number of cells needed in the neighborhood of a live cell to get it to survive">
-                            <input type="text" id="survive" value="2-3"
-                                placeholder="0,2-5" pattern="\s*\d{1,2}(\s*-\s*\d{1,2})?(\s*,\s*\d{1,2}(\s*-\s*\d{1,2})?)*\s*(,|-)?\s*"><span
-                                class="number-list-validity" ></span><span>&nbsp;survival</span>
-                        </label>
-                    </section>
+                    </div>
+
+                    <div class="tab" id="colors-pane" title="color settings">
+                        <input class="tabber" id="color-tab" name="config-tabs" type="radio">
+                        <label for="color-tab"><i class="material-icons">palette</i></label>
+                        <div class="tab-content">
+                            <label>colors:&nbsp;</label>
+                            <label for="grid-color" title="grid color">
+                                <input id="grid-color" type="color"
+                                value="#e0e0e0"><span>grid</span> <!-- keep span attached -->
+                            </label>
+                            <label for="live-color" title="live cell color">
+                                <input id="live-color" type="color"
+                                value="#000000"><span>cell</span> <!-- keep span attached -->
+                            </label>
+                            <label for="trail-color" title="trail color gradient start">
+                                <input id="trail-color" type="color"
+                                value="#ff80c0"><span>trail</span> <!-- keep span attached -->
+                            </label>
+                            <label for="alpha" title="transparency factor applied to previous trails (0 = fully transparent, 1 = fully opaque)">
+                                <span class="slider-value" id="alpha-value">0.5
+                                </span><input type="range" id="alpha" value="0.5" min="0.1" max="0.9" step="0.1"><span>trail fading</span> <!-- keep span attached -->
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="tab" id="geometry-pane" title="tiling and geometry settings">
+                        <input class="tabber" id="geometry-tab" name="config-tabs" type="radio">
+                        <label for="geometry-tab"><i class="material-icons">grid_on</i></label>
+                        <div class="tab-content">
+                            <label>tiling:&nbsp;</label>
+                            <label for="triangle" title="triangular tiling">
+                                <input type="radio" id="triangle" name="tiling" value="triangle"><span id="tri">&nbsp;&#x25b3;</span>
+                            </label>
+                            <label for="square" title="square tiling">
+                                <input type="radio" id="square" name="tiling" value="square" checked><span id="sqr">&nbsp;&#x2395;</span>
+                            </label>
+                            <label for="hexagon" title="hexagonal tiling">
+                                <input type="radio" id="hexagon" name="tiling" value="hexagon"><span id="hex">&nbsp;&#x2394;</span>
+                            </label>
+                            <label>geometry:&nbsp;</label>
+                            <table title="for each side of the game board, indicate whether cells drop off the edge (disappear) or reappear on the same edge (bouncing back) or on another edge (arrows indicate in which direction the cells come from after hitting the edge)">
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <select id="top-effect">
+                                                <option value="drop" title="disappear" selected>×</option>
+                                                <option value="top" title="bounce down from top">↓</option>
+                                                <option value="bottom" title="reappear from bottom">↑</option>
+                                                <option value="left" title="reappear from left side">→</option>
+                                                <option value="right" title="reappear from right side">←</option>
+                                            </select>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <select id="left-effect">
+                                                <option value="drop" title="disappear" selected>×</option>
+                                                <option value="top" title="reappear from top">↓</option>
+                                                <option value="bottom" title="reappear from bottom">↑</option>
+                                                <option value="left" title="bounce right from left side">→</option>
+                                                <option value="right" title="reappear from right side">←</option>
+                                            </select>
+                                        </td>
+                                        <td id="universe">
+                                            <svg width="100%" height="100%">
+                                                <rect id="grid-geometry" width="100%" height="100%" fill="url(#square-pattern)"/>
+                                            </svg>
+                                        </td>
+                                        <td>
+                                            <select id="right-effect">
+                                                <option value="drop" title="disappear" selected>×</option>
+                                                <option value="top" title="reappear from top">↓</option>
+                                                <option value="bottom" title="reappear from bottom">↑</option>
+                                                <option value="left" title="reappear from left side">→</option>
+                                                <option value="right" title="bounce left from right side">←</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <select id="bottom-effect">
+                                                <option value="drop" title="disappear" selected>×</option>
+                                                <option value="top" title="reappear from top">↓</option>
+                                                <option value="bottom" title="bounce up from bottom">↑</option>
+                                                <option value="left" title="reappear from left side">→</option>
+                                                <option value="right" title="reappear from right side">←</option>
+                                            </select>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                    <div class="tab" id="neighborhood-pane" title="neighborhood rules">
+                        <input class="tabber" id="neighborhood-tab" name="config-tabs" type="radio">
+                        <label for="neighborhood-tab"><i class="material-icons">blur_on</i></label>
+                        <div class="tab-content">
+                            <label>neighborhood:&nbsp;</label>
+                            <label for="neighborhood" title="neighborhood mode is either Moore (corners count) or Von Neumann (corners don't count)">
+                                <select id="neighborhood">
+                                    <option value="Moore" selected>Moore</option>
+                                    <option value="Von Neumann">Von Neumann</option>
+                                </select><span>&nbsp;mode</span><!-- keep span attached -->
+                            </label>
+                            <label for="range" title="range is the maximum distance from center cell">
+                                <span class="slider-value" id="range-value">1
+                                </span><input type="range" id="range" value="1" min="1" max="3" step="1"><span>range</span> <!-- keep span attached -->
+                            </label>
+                            <div id="grid-neighborhood">
+                                <canvas id="neighborhood-canvas" width="100" height="100">
+                                    Use a modern browser (e.g. Chrome, Firefox, Mozilla) to display game.
+                                </canvas>
+                                <svg id="neighborhood-svg" width="100%" height="100%">
+                                    <rect id="neighborhood-viz" width="100%" height="100%" fill="url(#square-pattern)"/>
+                                </svg>
+                            </div>
+                            <label>neighborhood cells needed for:<br /></label>
+                            <label for="born" title="number of cells needed in the neighborhood of an empty cell to get it born">
+                                <input type="text" id="born" value="3"
+                                    placeholder="0,2-5" pattern="\s*\d{1,2}(\s*-\s*\d{1,2})?(\s*,\s*\d{1,2}(\s*-\s*\d{1,2})?)*\s*(,|-)?\s*"><span
+                                    class="number-list-validity"></span><span>&nbsp;birth</span>
+                            </label>
+                            <label for="survive" title="number of cells needed in the neighborhood of a live cell to get it to survive">
+                                <input type="text" id="survive" value="2-3"
+                                    placeholder="0,2-5" pattern="\s*\d{1,2}(\s*-\s*\d{1,2})?(\s*,\s*\d{1,2}(\s*-\s*\d{1,2})?)*\s*(,|-)?\s*"><span
+                                    class="number-list-validity" ></span><span>&nbsp;survival</span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -194,31 +221,16 @@
                 <input type="button" id="clear"   class="material-icons" value="stop"           title="clear" >
                 <input type="button" id="backup"  class="material-icons" value="cloud_upload"   title="backup">
                 <input type="button" id="restore" class="material-icons" value="cloud_download" title="restore" >
-                <input type="button" id="rules"   class="material-icons" value="build"          title="rules">
                 <input type="button" id="config"  class="material-icons" value="settings"       title="configuration (zoom, colors, geometry)">
 
-                <fieldset id="tiling" title="tiling">
-                    <legend><i class="material-icons light">view_comfy</i></legend>
-                    <label for="triangle" title="triangular tiling">
-                        <input type="radio" id="triangle" name="tiling" value="triangle"><span id="tri">&nbsp;&#x25b3;</span>
-                    </label>
-                    <label for="square" title="square tiling">
-                        <input type="radio" id="square" name="tiling" value="square" checked><span id="sqr">&nbsp;&#x2395;</span>
-                    </label>
-                    <label for="hexagon" title="hexagonal tiling">
-                        <input type="radio" id="hexagon" name="tiling" value="hexagon"><span id="hex">&nbsp;&#x2394;</span>
-                    </label>
-                </fieldset>
+
 
                 <label for="grid" class="material-icons" title="grid">
                     <input type="checkbox" id="grid" value="on" checked><span>border_clear</span>
                 </label>
-                <label for="zoom" class="material-icons" title="zoom">
-                    <span class="slider-value" id="zoom-value">0</span><input type="range" id="zoom" value="0" min="-3" max="3" step="1"><span>zoom_in</span>
-                </label>
                 <label for="trail" class="material-icons" title="trail">
                     <input type="checkbox" id="trail"  value="on"
-                    checked><span>line_weight</span>
+                    checked><span><div class=rotate>line_weight</div></span>
                 </label>
                 <label for="speed" class="material-icons" title="speed">
                     <span class="slider-value" id="speed-value">0

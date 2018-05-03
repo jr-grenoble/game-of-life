@@ -28,11 +28,9 @@
     --min-margin: 0.08rem;
     --min-padding: 0.2rem;
     --popup-gutter: 1.5rem;
-    --tab-width: 2.7rem;
-    --tab-height: 2.4rem;
+    --tab-width: 2.5rem;
+    --tab-height: 2rem;
     --tab-shift: -2.7rem;
-    --tiling-height: 2.4rem;
-    --tiling-shift: 2rem;
     box-sizing: border-box;
     overflow: hidden;
 }
@@ -46,6 +44,58 @@
         min-width: 1rem;
         text-align: center;
     }
+
+    .tabs {
+        clear: both;
+        height: calc( 100% - var( --menu-height ) - var( --min-padding ) );
+        position:relative;
+        z-index: 1;
+    }
+
+    .tabs .filler {
+        height: calc( 100% - var( --menu-height ) - var( --min-padding ) );
+        min-width: calc( 100% - 2 * var( --min-padding ) );
+        position: absolute;
+        top: var( --menu-height );
+        left: var( --min-padding );
+        right: var( --min-padding );
+        z-index: 1;
+    }
+
+    .tab > [type=radio] ~ label {
+        float: left;
+        height: var( --tab-height );
+        margin-left: calc( 3 * var( --min-margin ) );
+        margin-right: calc( 0.5 * var( --min-margin ) );
+        padding: var( --min-padding );
+        position: relative;
+        text-align: center;
+        width: var( --tab-width );
+    }
+
+    .tab > [type=radio]:checked ~ label {
+        z-index: 2;
+    }
+
+    .tab > [type=radio]:checked ~ label ~ .tab-content {
+        z-index: 2;
+    }
+
+    .tab-content {
+        display: flex;
+        flex-flow: column wrap;
+        left: var( --min-padding );
+        padding: var( --min-padding );
+        position: absolute;
+        right: var( --min-padding );
+        top: var( --menu-height );
+        z-index: 0;
+    }
+
+    .tab-content > * {
+        flex: 0 1 auto;
+    }
+
 }
 
 /* ==| Attributes |============================================================
@@ -80,7 +130,7 @@
     }
 
     input {
-        flex: 0 1 0;
+        /* flex: 0 1 0; */
         margin: var( --button-margin );
         min-width: var( --button-width );
         max-height: var( --button-height );
@@ -88,7 +138,7 @@
     }
 
     label {
-        flex: 0 1 0;
+        /* flex: 0 1 0; */
         margin: var( --button-margin );
         min-width: var( --label-width );
         max-height: var( --label-height );
@@ -120,6 +170,7 @@
     #cancel {
         position: absolute;
         right: var( --min-padding );
+        z-index: 100;
     }
 
     #control {
@@ -202,7 +253,7 @@
     #popup > div {
         bottom: var( --popup-gutter );
         display: block flex;
-        flex-flow: row wrap;
+        flex-flow: column wrap;
         justify-content: space-between;
         left: var( --popup-gutter );
         margin: auto;
@@ -210,78 +261,6 @@
         position: absolute;
         right: var( --popup-gutter );
         top: var( --popup-gutter );
-    }
-
-    #settings section {
-        display: block;
-        bottom: 0;
-        left: 0;
-        padding: var( --min-padding );
-        position: absolute;
-        right: 0;
-        top: var( --tab-height );
-        z-index: 10;
-    }
-
-    #settings section h1 {
-        display: inline-block;
-        height: var( --tab-height );
-        position: absolute;
-        top: var( --tab-shift );
-    }
-
-    #settings section h1 {
-        text-align: center;
-        width: var( --tab-width );
-    }
-
-    #settings section h1 a {
-        padding: var( --min-padding );
-    }
-
-    #settings section:nth-child(1) h1 {
-        left: calc( 1 * var( --tab-width ) );
-    }
-    #settings section:nth-child(2) h1 {
-        left: calc( 2 * var( --tab-width ) );
-    }
-    #settings section:nth-child(3) h1 {
-        left: calc( 3 * var( --tab-width ) );
-    }
-    #settings section:nth-child(4) h1 {
-        left: calc( 4 * var( --tab-width ) );
-    }
-    #settings section:nth-child(5) h1 {
-        left: calc( 5 * var( --tab-width ) );
-    }
-    #settings section:nth-child(6) h1 {
-        left: calc( 6 * var( --tab-width ) );
-    }
-    #settings section:nth-child(7) h1 {
-        left: calc( 7 * var( --tab-width ) );
-    }
-    #settings section:nth-child(8) h1 {
-        left: calc( 8 * var( --tab-width ) );
-    }
-    #settings section:nth-child(9) h1 {
-        left: calc( 9 * var( --tab-width ) );
-    }
-
-    #settings section:target {
-        z-index: 20;
-    }
-
-
-    #tiling {
-        display:inline-block;
-        max-height: var( --tiling-height );
-        position: relative;
-        top: var( --tiling-shift );
-    }
-
-    #tiling > :not(legend) {
-        position: relative;
-        top: calc( -0.8 * var( --tiling-shift ) );
     }
 
 }

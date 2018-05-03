@@ -17,10 +17,10 @@
     --trail-color: #bfffbf;
 }
 
-.square-cell {
+/* .square-cell {
     height: calc( 10px * var( --pattern-scale ) - var( --pattern-stroke ) );
     width: calc( 10px * var( --pattern-scale ) - var( --pattern-stroke ) );
-}
+} */
 
 #grid-background {
     fill: var( --grid-fill );

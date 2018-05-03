@@ -43,240 +43,107 @@
         }
 
 /* TEST */
+    #enclosure {
+        margin: auto;
+        padding: 1em;
+        width:50%;
+        border: 1pt dotted grey;
+    }
+    .tabs {
+        background-color: white;
+        position:relative;
+        clear: both;
+        height: calc( 100% - 3em );
+        width: 100%;
+        z-index: 1;
+    }
+    .tabs .filler {
+        background: white;
+        border: red solid 1pt;
+        position: absolute;
+        top: 2em;
+        width: 100%;
+        height: calc( 100% - 2em );
+        z-index: 1;
+    }
+    .tab > [type=radio] {
+        display: none;
+    }
+    .tab > [type=radio]:checked ~ label {
+        color:red;
+        z-index: 3;
+    }
+    .tab > [type=radio]:checked ~ label ~ .tab-content {
+        color:red;
+        z-index: 2;
+    }
+    .tab > [type=radio] ~ label {
+        /* padding: 0.5em 0.75em 0em 0.75em; */
+        border-top: 1pt solid #f00;
+        border-left: 1pt solid red;
+        border-right: 1pt solid red;
+        float: left;
+        position: relative;
+        height: 2em;
+        width: 2em;
+    }
+    .tab-content {
+        background: white;
+        border-top: 1pt solid red;
+        border-left: 1pt solid red;
+        padding: 1em;
+        position: absolute;
+        top: 2em;
+        left: 0;
+        z-index: 0;
+    }
 
-        #settings section {
-            background-color: #fff;
-            border: solid 1pt #e0e0e0;
-
-            display: block;
-            bottom: 1.5em;
-            left: 1.5em;
-            padding: 1em;
-            position: absolute;
-            right: 1.5em;
-            top: 2.5em;
-            z-index: 10;
-        }
-
-        #settings section h1 {
-            display: inline-block;
-            height: 2rem;
-            position: absolute;
-            top: -3rem;
-        }
 
 
-        #settings section h1 {
-            font-size: larger;
-            text-align: center;
-            width: 2.5rem;
-        }
-
-        #settings section h1 a {
-            background-color: #fff;
-            box-shadow: 0px 2px 15px #aaa;
-            color: #aaa;
-            padding: 0.2rem;
-        }
-
-        #settings section h1 a:hover {
-            box-shadow: 0px 2px 15px #888;
-            color: #888;
-        }
-
-        #settings section:nth-child(1) h1 {
-            left: 3rem;
-        }
-        #settings section:nth-child(2) h1 {
-            left: 6rem;
-        }
-        #settings section:nth-child(3) h1 {
-            left: 9rem;
-        }
-
-        #settings section:target {
-            z-index: 20;
-        }
-
-        #settings section:target h1 a {
-            background-color: white;
-            box-shadow: none;
-            color: black;
-        }
-
-        #settings section:target h1 a i::after,
-        #settings section:target h1 a i::before {
-            background-color: white;
-            box-shadow: 0px 2px 15px #444;
-            color: white;
-            content: ".";
-            position: relative;
-            left:0;
-            z-index: -1;
-        }
-
-        #settings i.material-icons {
-            font-style: normal;
-        }
         </style>
     </head>
     <body>
-        <article id="fields">
-            <section id="zoom">
-                <h1 tabindex="1"><a href="#zoom"><i class="material-icons">launch</i></a></h1>
-                <p>
-                    Zoom section here
-                </p>
-                <p>
-                    Some contents
-                </p>
-            </section>
-            <section id="colors">
-                <h1 tabindex="2"><a href="#colors"><i class="material-icons">palette</i></a></h1>
-                <p>
-                    Colors section here
-                </p>
-            </section>
-            <section id="geometry">
-                <h1 tabindex="3"><a href="#geometry"><i class="material-icons">swap_vert</i></a></h1>
-                <p>
-                    Geometry section here
-                </p>
-            </section>
-        </article>
-
-        <div id="settings" style="display:none">
-            <fieldset title="zoom settings">
-                <legend><i class="material-icons light">launch</i></legend>
-                <label>zoom:&nbsp;</label>
-                <label for="scaling-mode" title="linear mode scale is 1 + step × (slider+shift); geometric mode scale is (1+step)^(slider+shift); where slider is the value of the zoom slider (between -2 and 2)">
-                    <select id="scaling-mode">
-                        <option value="linear" selected>linear</option>
-                        <option value="geometric">geometric</option>
-                    </select><span>&nbsp;mode</span><!-- keep span attached -->
-                </label>
-                <label for="scaling-step" title="linear or geometric (multiplicative) increment when using the zoom slider; see mode for formula">
-                    <span class="slider-value" id="scaling-step-value">0.1
-                    </span><input type="range" id="scaling-step" value="0.1" min="0.1" max="0.9" step="0.1"><span>step</span> <!-- keep span attached -->
-                </label>
-                <label for="scaling-shift" title="shift, i.e. value added to the zoom slider; see mode for formula">
-                    <span class="slider-value" id="scaling-shift-value">2
-                    </span><input type="range" id="scaling-shift" value="2" min="-1" max="4" step="1"><span>shift</span> <!-- keep span attached -->
-                </label>
-            </fieldset>
-
-            <fieldset title="color settings">
-                <legend><i class="material-icons light">palette</i></legend>
-                <label>colors:&nbsp;</label>
-                <label for="grid-color" title="grid color">
-                    <input id="grid-color" type="color"
-                    value="#e0e0e0"><span>grid</span> <!-- keep span attached -->
-                </label>
-                <label for="live-color" title="live cell color">
-                    <input id="live-color" type="color"
-                    value="#000000"><span>cell</span> <!-- keep span attached -->
-                </label>
-                <label for="trail-color" title="trail color gradient start">
-                    <input id="trail-color" type="color"
-                    value="#ff80c0"><span>trail</span> <!-- keep span attached -->
-                </label>
-                <label for="alpha" title="transparency factor applied to previous trails (0 = fully transparent, 1 = fully opaque)">
-                    <span class="slider-value" id="alpha-value">0.5
-                    </span><input type="range" id="alpha" value="0.5" min="0.1" max="0.9" step="0.1"><span>trail transparency</span> <!-- keep span attached -->
-                </label>
-            </fieldset>
-
-            <fieldset title="geometry settings">
-                <legend>
-                    <i class="material-icons light">swap_vert</i><i class="material-icons light" style="position:absolute;left:.72em">swap_horiz</i>
-                </legend>
-                <table title="for each side of the game board, indicate whether cells drop off the edge (disappear) or reappear on the same edge (bouncing back) or on another edge (arrows indicate in which direction the cells come from after hitting the edge)">
-                    <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td>
-                                <select id="top-effect">
-                                    <option value="drop" title="disappear" selected>×</option>
-                                    <option value="top" title="bounce down from top">↓</option>
-                                    <option value="bottom" title="reappear from bottom">↑</option>
-                                    <option value="left" title="reappear from left side">→</option>
-                                    <option value="right" title="reappear from right side">←</option>
-                                </select>
-                            </td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td><label>geometry:</label></td>
-                            <td>
-                                <select id="left-effect">
-                                    <option value="drop" title="disappear" selected>×</option>
-                                    <option value="top" title="reappear from top">↓</option>
-                                    <option value="bottom" title="reappear from bottom">↑</option>
-                                    <option value="left" title="bounce right from left side">→</option>
-                                    <option value="right" title="reappear from right side">←</option>
-                                </select>
-                            </td>
-                            <td id="universe">
-                                <svg width="100%" height="100%">
-                                    <rect id="grid-geometry" width="100%" height="100%" fill="url(#square-pattern)"/>
-                                </svg>
-                            </td>
-                            <td>
-                                <select id="right-effect">
-                                    <option value="drop" title="disappear" selected>×</option>
-                                    <option value="top" title="reappear from top">↓</option>
-                                    <option value="bottom" title="reappear from bottom">↑</option>
-                                    <option value="left" title="reappear from left side">→</option>
-                                    <option value="right" title="bounce left from right side">←</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td>
-                                <select id="bottom-effect">
-                                    <option value="drop" title="disappear" selected>×</option>
-                                    <option value="top" title="reappear from top">↓</option>
-                                    <option value="bottom" title="bounce up from bottom">↑</option>
-                                    <option value="left" title="reappear from left side">→</option>
-                                    <option value="right" title="reappear from right side">←</option>
-                                </select>
-                            </td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </fieldset>
-
-
-
-            
-            <fieldset title="neighborhood rules">
-                <legend><i class="material-icons light">grid_on</i></legend>
-                <label>neighborhood:&nbsp;</label>
-                <label for="neighborhood" title="neighborhood mode is either Moore (corners count) or Von Neumann (corners don't count)">
-                    <select id="neighborhood">
-                        <option value="Moore" selected>Moore</option>
-                        <option value="Von Neumann">Von Neumann</option>
-                    </select><span>&nbsp;mode</span><!-- keep span attached -->
-                </label>
-                <label for="range" title="range is the maximum distance from center cell">
-                    <span class="slider-value" id="range-value">1
-                    </span><input type="range" id="range" value="1" min="1" max="3" step="1"><span>range</span> <!-- keep span attached -->
-                </label>
-                <div id="grid-neighborhood">
-                    <canvas id="neighborhood-canvas" width="100" height="100">
-                        Use a modern browser (e.g. Chrome, Firefox, Mozilla) to display game.
-                    </canvas>
-                    <svg id="neighborhood-svg" width="100%" height="100%">
-                        <rect id="neighborhood-viz" width="100%" height="100%" fill="url(#square-pattern)"/>
-                    </svg>
+        <div id="enclosure">
+            <div class="tabs" id="config">
+                <div class="filler"></div>
+                <div class="tab" id="zoom">
+                    <input class="tabber" id="zoom-tab" name="config-tabs" type="radio" checked>
+                    <label for="zoom-tab"><i class="material-icons">launch</i></label>
+                    <div class="tab-content">
+                        <p>
+                            Zoom section here
+                        </p>
+                        <p>
+                            Some zoom contents
+                        </p>
+                        <p>
+                            And some more zoom
+                        </p>
+                        <p>
+                            And more zoom
+                        </p>
+                    </div>
                 </div>
-            </fieldset>
 
+                <div class="tab" id="colors">
+                    <input class="tabber" id="color-tab" name="config-tabs" type="radio">
+                    <label for="color-tab"><i class="material-icons">palette</i></label>
+                    <div class="tab-content">
+                        <p>
+                            Color section here
+                        </p>
+                        <p>
+                            Some colored contents
+                        </p>
+                        <p>
+                            And some more colors
+                        </p>
+                    </div>
+                </div>
+
+            </div>
         </div>
+
 
 
         <div id="grid-container" style="display:none">
@@ -300,6 +167,147 @@
             </svg>
 
         </div>
+
+<!-- PARKING LOT -->
+<section id="zoom">
+    <h1 title="zoom settings"><a href="#zoom"><i class="material-icons">launch</i></a></h1>
+    <label>zoom:&nbsp;</label>
+    <label for="scaling-mode" title="linear mode scale is 1 + step × (slider+shift); geometric mode scale is (1+step)^(slider+shift); where slider is the value of the zoom slider (between -2 and 2)">
+        <select id="scaling-mode">
+            <option value="linear" selected>linear</option>
+            <option value="geometric">geometric</option>
+        </select><span>&nbsp;mode</span><!-- keep span attached -->
+    </label>
+    <label for="scaling-step" title="linear or geometric (multiplicative) increment when using the zoom slider; see mode for formula">
+        <span class="slider-value" id="scaling-step-value">0.1
+        </span><input type="range" id="scaling-step" value="0.1" min="0.1" max="0.9" step="0.1"><span>step</span> <!-- keep span attached -->
+    </label>
+    <label for="scaling-shift" title="shift, i.e. value added to the zoom slider; see mode for formula">
+        <span class="slider-value" id="scaling-shift-value">2
+        </span><input type="range" id="scaling-shift" value="2" min="-1" max="4" step="1"><span>shift</span> <!-- keep span attached -->
+    </label>
+</section>
+<section id="colors">
+    <h1 title="color settings"><a href="#colors"><i class="material-icons">palette</i></a></h1>
+    <label>colors:&nbsp;</label>
+    <label for="grid-color" title="grid color">
+        <input id="grid-color" type="color"
+        value="#e0e0e0"><span>grid</span> <!-- keep span attached -->
+    </label>
+    <label for="live-color" title="live cell color">
+        <input id="live-color" type="color"
+        value="#000000"><span>cell</span> <!-- keep span attached -->
+    </label>
+    <label for="trail-color" title="trail color gradient start">
+        <input id="trail-color" type="color"
+        value="#ff80c0"><span>trail</span> <!-- keep span attached -->
+    </label>
+    <label for="alpha" title="transparency factor applied to previous trails (0 = fully transparent, 1 = fully opaque)">
+        <span class="slider-value" id="alpha-value">0.5
+        </span><input type="range" id="alpha" value="0.5" min="0.1" max="0.9" step="0.1"><span>trail transparency</span> <!-- keep span attached -->
+    </label>
+</section>
+<section id="geometry">
+    <h1 title="geometry settings"><a href="#geometry"><i class="material-icons">zoom_out_map</i></a></h1>
+    <table title="for each side of the game board, indicate whether cells drop off the edge (disappear) or reappear on the same edge (bouncing back) or on another edge (arrows indicate in which direction the cells come from after hitting the edge)">
+        <tbody>
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    <select id="top-effect">
+                        <option value="drop" title="disappear" selected>×</option>
+                        <option value="top" title="bounce down from top">↓</option>
+                        <option value="bottom" title="reappear from bottom">↑</option>
+                        <option value="left" title="reappear from left side">→</option>
+                        <option value="right" title="reappear from right side">←</option>
+                    </select>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><label>geometry:</label></td>
+                <td>
+                    <select id="left-effect">
+                        <option value="drop" title="disappear" selected>×</option>
+                        <option value="top" title="reappear from top">↓</option>
+                        <option value="bottom" title="reappear from bottom">↑</option>
+                        <option value="left" title="bounce right from left side">→</option>
+                        <option value="right" title="reappear from right side">←</option>
+                    </select>
+                </td>
+                <td id="universe">
+                    <svg width="100%" height="100%">
+                        <rect id="grid-geometry" width="100%" height="100%" fill="url(#square-pattern)"/>
+                    </svg>
+                </td>
+                <td>
+                    <select id="right-effect">
+                        <option value="drop" title="disappear" selected>×</option>
+                        <option value="top" title="reappear from top">↓</option>
+                        <option value="bottom" title="reappear from bottom">↑</option>
+                        <option value="left" title="reappear from left side">→</option>
+                        <option value="right" title="bounce left from right side">←</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    <select id="bottom-effect">
+                        <option value="drop" title="disappear" selected>×</option>
+                        <option value="top" title="reappear from top">↓</option>
+                        <option value="bottom" title="bounce up from bottom">↑</option>
+                        <option value="left" title="reappear from left side">→</option>
+                        <option value="right" title="reappear from right side">←</option>
+                    </select>
+                </td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+<section id="neighborhood-rules">
+    <h1 title="neighborhood rules"><a href="#neighborhood-rules"><i class="material-icons">grid_on</i></a></h1>
+    <label>neighborhood:&nbsp;</label>
+    <label for="neighborhood" title="neighborhood mode is either Moore (corners count) or Von Neumann (corners don't count)">
+        <select id="neighborhood">
+            <option value="Moore" selected>Moore</option>
+            <option value="Von Neumann">Von Neumann</option>
+        </select><span>&nbsp;mode</span><!-- keep span attached -->
+    </label>
+    <label for="range" title="range is the maximum distance from center cell">
+        <span class="slider-value" id="range-value">1
+        </span><input type="range" id="range" value="1" min="1" max="3" step="1"><span>range</span> <!-- keep span attached -->
+    </label>
+    <div id="grid-neighborhood">
+        <canvas id="neighborhood-canvas" width="100" height="100">
+            Use a modern browser (e.g. Chrome, Firefox, Mozilla) to display game.
+        </canvas>
+        <svg id="neighborhood-svg" width="100%" height="100%">
+            <rect id="neighborhood-viz" width="100%" height="100%" fill="url(#square-pattern)"/>
+        </svg>
+    </div>
+</section>
+<section id="cell-rules">
+    <h1 title="cell rules"><a href="#cell-rules"><i class="material-icons">blur_on</i></a></h1>
+    <label>neighborhood cells needed for:<br /></label>
+    <label for="born" title="number of cells needed in the neighborhood of an empty cell to get it born">
+        <input type="text" id="born" value="3"
+            placeholder="0,2-5" pattern="\s*\d{1,2}(\s*-\s*\d{1,2})?(\s*,\s*\d{1,2}(\s*-\s*\d{1,2})?)*\s*(,|-)?\s*"><span
+            class="number-list-validity"></span><span>&nbsp;birth</span>
+    </label>
+    <label for="survive" title="number of cells needed in the neighborhood of a live cell to get it to survive">
+        <input type="text" id="survive" value="2-3"
+            placeholder="0,2-5" pattern="\s*\d{1,2}(\s*-\s*\d{1,2})?(\s*,\s*\d{1,2}(\s*-\s*\d{1,2})?)*\s*(,|-)?\s*"><span
+            class="number-list-validity" ></span><span>&nbsp;survival</span>
+    </label>
+</section>
+
+
+
+
         <script>
             console.log ( document.getElementById ( "hex-pattern" ).width.baseVal.value );
         </script>
