@@ -35,10 +35,12 @@
 }
 
 #grid-neighborhood {
-    background-color: var( --trail-color );
+    background-color: white;
 }
 
-#grid-neighborhood, #position-watch, #position-canvas {
+/* OVERRIDE */
+/* #grid-neighborhood,  */
+#position-watch, #position-canvas {
     height: var( --neighborhood-side );
     width: var( --neighborhood-side );
 }
@@ -51,13 +53,17 @@
 }
 
 #neighborhood-canvas {
-    height: var( --neighborhood-side );
-    width: var( --neighborhood-side );
+    /* OVERRIDE */
+    /* height: var( --neighborhood-side );
+    width: var( --neighborhood-side ); */
 }
 
 #neighborhood-viz {
     fill: url(#square-pattern);
     stroke: var( --pattern-color );
+    /* OVERRIDE */
+    fill: var( --grid-fill );
+    stroke: none;
 }
 
 #universe > svg {

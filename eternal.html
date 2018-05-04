@@ -159,13 +159,15 @@
                             </label>
                             <label for="range" title="range is the maximum distance from center cell">
                                 <span class="slider-value" id="range-value">1
-                                </span><input type="range" id="range" value="1" min="1" max="3" step="1"><span>range</span> <!-- keep span attached -->
+                                </span><input type="range" id="range" value="1" min="1" max="5" step="1"><span>range</span> <!-- keep span attached -->
                             </label>
                             <div id="grid-neighborhood">
-                                <canvas id="neighborhood-canvas" width="100" height="100">
+                                <canvas id="neighborhood-canvas" >
+                                    width="100%" height="100%"
                                     Use a modern browser (e.g. Chrome, Firefox, Mozilla) to display game.
+                                    width="100%" height="100%"
                                 </canvas>
-                                <svg id="neighborhood-svg" width="100%" height="100%">
+                                <svg id="neighborhood-svg" >
                                     <rect id="neighborhood-viz" width="100%" height="100%" fill="url(#square-pattern)"/>
                                 </svg>
                             </div>
