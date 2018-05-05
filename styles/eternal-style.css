@@ -190,9 +190,9 @@
     [type="checkbox"] ~ span::before,
     [type="radio"] ~ span::before {
         color: var( --unchecked );
-        content: "check_box_outline_blank";
         display: inline-block;
         font: var( --icon-font );
+        transition: content 0.5s ease;
     }
 
     [type="checkbox"] ~ span::before {
@@ -221,9 +221,6 @@
         -webkit-appearance: none;
         appearance: none;
         background: transparent;
-    }
-
-    [type="range"] {
         box-shadow: none!important;
     }
 
