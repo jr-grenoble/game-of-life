@@ -23,33 +23,8 @@
                 <div class="tabs" id="settings">
                     <div class="filler"></div>
 
-                    <div class="tab" id="zoom-pane" title="zoom settings">
-                        <input class="tabber" id="zoom-tab" name="config-tabs" type="radio" checked>
-                        <label for="zoom-tab"><i class="material-icons">zoom_in</i></label>
-                        <div class="tab-content">
-                            <label>zoom:&nbsp;</label>
-                            <label for="zoom" class="material-icons" title="zoom">
-                                <span class="slider-value" id="zoom-value">0</span><input type="range" id="zoom" value="0" min="-3" max="3" step="1"><span>zoom_in</span>
-                            </label>
-                            <label for="scaling-mode" title="linear mode scale is 1 + step × (slider+shift); geometric mode scale is (1+step)^(slider+shift); where slider is the value of the zoom slider (between -2 and 2)">
-                                <select id="scaling-mode">
-                                    <option value="linear" selected>linear</option>
-                                    <option value="geometric">geometric</option>
-                                </select><span>&nbsp;mode</span><!-- keep span attached -->
-                            </label>
-                            <label for="scaling-step" title="linear or geometric (multiplicative) increment when using the zoom slider; see mode for formula">
-                                <span class="slider-value" id="scaling-step-value">0.1
-                                </span><input type="range" id="scaling-step" value="0.1" min="0.1" max="0.9" step="0.1"><span>step</span> <!-- keep span attached -->
-                            </label>
-                            <label for="scaling-shift" title="shift, i.e. value added to the zoom slider; see mode for formula">
-                                <span class="slider-value" id="scaling-shift-value">2
-                                </span><input type="range" id="scaling-shift" value="2" min="-1" max="4" step="1"><span>shift</span> <!-- keep span attached -->
-                            </label>
-                        </div>
-                    </div>
-
                     <div class="tab" id="colors-pane" title="color settings">
-                        <input class="tabber" id="color-tab" name="config-tabs" type="radio">
+                        <input class="tabber" id="color-tab" name="config-tabs" type="radio" checked>
                         <label for="color-tab"><i class="material-icons">palette</i></label>
                         <div class="tab-content">
                             <label>colors:&nbsp;</label>
@@ -65,7 +40,7 @@
                                 <input id="trail-color" type="color"
                                 value="#ff80c0"><span>trail</span> <!-- keep span attached -->
                             </label>
-                            <label for="alpha" title="transparency factor applied to previous trails (0 = fully transparent, 10 = fully opaque)">
+                            <label for="alpha" title="transparency factor applied to previous trails (10 = fully transparent, 0 = fully opaque)">
                                 <span class="slider-value" id="alpha-value">5
                                 </span><input type="range" id="alpha" value="5" min="0" max="10" step="1"><span>trail fading</span> <!-- keep span attached -->
                             </label>
@@ -182,6 +157,15 @@
                                     placeholder="0,2-5" pattern="\s*\d{1,2}(\s*-\s*\d{1,2})?(\s*,\s*\d{1,2}(\s*-\s*\d{1,2})?)*\s*(,|-)?\s*"><span
                                     class="number-list-validity" ></span><span>&nbsp;survival</span>
                             </label>
+                            <label for="mutate" title="number of cells needed in the neighborhood of a cell to get it to mutate">
+                                <input type="text" id="mutate" value="1"
+                                    placeholder="0,2-5" pattern="\s*\d{1,2}(\s*-\s*\d{1,2})?(\s*,\s*\d{1,2}(\s*-\s*\d{1,2})?)*\s*(,|-)?\s*"><span
+                                    class="number-list-validity" ></span><span>&nbsp;mutation</span>
+                            </label>
+                            <label for="probability" title="mutation probability (-log): 0 means certainty, 10 means 10⁻¹⁰">
+                                <span class="slider-value" id="probability-value">5
+                                </span><input type="range" id="probability" value="5" min="0" max="10" step="1"><span>-log(probability)</span> <!-- keep span attached -->
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -235,6 +219,10 @@
                 <label for="speed" class="material-icons" title="speed">
                     <span class="slider-value" id="speed-value">0
                     </span><input type="range" id="speed" value="0" min="-2" max="2"><span>slow_motion_video</span>
+                </label>
+                <label for="zoom" class="material-icons" title="zoom">
+                    <span class="slider-value" id="zoom-value">0
+                    </span><input type="range" id="zoom" value="0" min="-10" max="10" step="1"><span>zoom_in</span>
                 </label>
                 <br />
                 <label><i class="material-icons">crop_free</i>&nbsp;<sup id="dimensions">${ this.width }, ${ this.height }</sup></label>
