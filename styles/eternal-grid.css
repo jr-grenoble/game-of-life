@@ -17,10 +17,6 @@
     --trail-color: #bfffbf;
 }
 
-/* .square-cell {
-    height: calc( 10px * var( --pattern-scale ) - var( --pattern-stroke ) );
-    width: calc( 10px * var( --pattern-scale ) - var( --pattern-stroke ) );
-} */
 
 #grid-background, #position-background {
     fill: var( --grid-fill );
@@ -38,30 +34,24 @@
     background-color: white;
 }
 
-/* OVERRIDE */
-/* #grid-neighborhood,  */
+
 #position-watch, #position-canvas {
     height: var( --neighborhood-side );
     width: var( --neighborhood-side );
 }
 
 #hexagon-pattern, #square-pattern, #triangle-pattern {
-    transform: scale( var( --pattern-scale ) );
+    transform: scale( var( --pattern-scale ), var( --pattern-scale ) );
     stroke-width: var( --pattern-stroke );
     stroke: var( --pattern-color );
     stroke-opacity: calc( 0.25 + 3 * var( --pattern-scale ) / 4 );
 }
 
 #neighborhood-canvas {
-    /* OVERRIDE */
-    /* height: var( --neighborhood-side );
     width: var( --neighborhood-side ); */
 }
 
 #neighborhood-viz {
-    fill: url(#square-pattern);
-    stroke: var( --pattern-color );
-    /* OVERRIDE */
     fill: var( --grid-fill );
     stroke: none;
 }

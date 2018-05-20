@@ -245,6 +245,7 @@
         overflow: hidden;
         padding: var( --min-padding );
         position: absolute;
+        resize: both;
         right: 0;
         top: var( --menu-height );
         width: 50%;
