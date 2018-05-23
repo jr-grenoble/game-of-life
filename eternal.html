@@ -164,8 +164,8 @@
                                     placeholder="0,2-5" pattern="\s*\d{1,2}(\s*-\s*\d{1,2})?(\s*,\s*\d{1,2}(\s*-\s*\d{1,2})?)*\s*(,|-)?\s*"><span
                                     class="number-list-validity" ></span><span>&nbsp;mutation</span>
                             </label>
-                            <label for="probability" title="mutation probability (-log): 0 means certainty, 10 means 10⁻¹⁰">
-                                <input type="range" id="probability" value="5" min="0" max="9" step="1">
+                            <label for="probability" title="mutation probability (-log): 0 means certainty, 9 means 10⁻⁹ ">
+                                <input type="range" id="probability" value="5" min="0" max="9" step=".5">
                                 <span class="slider-value" id="probability-value">5</span>
                                 <span>-log(probability)</span>
                             </label>
@@ -212,13 +212,7 @@
                 <input type="button" id="restore" class="material-icons" value="cloud_download" title="restore" >
                 <input type="button" id="config"  class="material-icons" value="settings"       title="configuration (zoom, colors, geometry)">
                 <br />
-                <label for="grid" class="material-icons" title="grid">
-                    <input type="checkbox" id="grid" value="on" checked><span>border_clear</span>
-                </label>
-                <label for="trail" class="material-icons" title="trail">
-                    <input type="checkbox" id="trail"  value="on"
-                    checked><span><div class=rotate>line_weight</div></span>
-                </label>
+
                 <label for="speed" class="material-icons" title="speed">
                     <input type="range" id="speed" value="0" min="-2" max="2" step="0.1">
                     <span class="slider-value" id="speed-value">0</span>
@@ -228,6 +222,17 @@
                     <input type="range" id="zoom" value="0" min="-10" max="10" step="0.1">
                     <span class="slider-value" id="zoom-value">0</span>
                     <span>zoom_in</span>
+                </label>
+                <br />
+                <label for="grid" class="material-icons" title="show grid">
+                    <input type="checkbox" id="grid" value="on" checked><span>border_clear</span>
+                </label>
+                <label for="trail" class="material-icons" title="show trail">
+                    <input type="checkbox" id="trail"  value="on"
+                    checked><span><div class=rotate>line_weight</div></span>
+                </label>
+                <label for="darwin" class="material-icons" title="allow mutations">
+                    <input type="checkbox" id="darwin" value="on" checked><span>flare</span>
                 </label>
                 <br />
                 <label><i class="material-icons">crop_free</i>&nbsp;<sup id="dimensions">${ this.width }, ${ this.height }</sup></label>
