@@ -20,7 +20,7 @@
                 <i class="material-icons" id="cancel">cancel</i>
                 <!-- popup can expose various contents, driven by javascript (all are hidden by default) -->
 
-                <div class="tabs" id="settings">
+                <div class="tabs" id="settings" >
                     <div class="filler"></div>
 
                     <div class="tab" id="colors-pane" title="color settings">
@@ -41,8 +41,9 @@
                                 value="#ff80c0"><span>trail</span> <!-- keep span attached -->
                             </label>
                             <label for="alpha" title="transparency factor applied to previous trails (10 = fully transparent, 0 = fully opaque)">
-                                <span class="slider-value" id="alpha-value">5
-                                </span><input type="range" id="alpha" value="5" min="0" max="10" step="1"><span>trail fading</span> <!-- keep span attached -->
+                                <input type="range" id="alpha" value="5" min="0" max="8" step="1">
+                                <span class="slider-value" id="alpha-value">5</span>
+                                <span>trail fading</span>
                             </label>
                         </div>
                     </div>
@@ -133,8 +134,9 @@
                                 </select><span>&nbsp;mode</span><!-- keep span attached -->
                             </label>
                             <label for="range" title="range is the maximum distance from center cell">
-                                <span class="slider-value" id="range-value">1
-                                </span><input type="range" id="range" value="1" min="1" max="3" step="1"><span>range</span> <!-- keep span attached -->
+                                <input type="range" id="range" value="1" min="1" max="3" step="1">
+                                <span class="slider-value" id="range-value">1</span>
+                                <span>range</span>
                             </label>
                             <div id="grid-neighborhood">
                                 <canvas id="neighborhood-canvas" >
@@ -163,8 +165,9 @@
                                     class="number-list-validity" ></span><span>&nbsp;mutation</span>
                             </label>
                             <label for="probability" title="mutation probability (-log): 0 means certainty, 10 means 10⁻¹⁰">
-                                <span class="slider-value" id="probability-value">5
-                                </span><input type="range" id="probability" value="5" min="0" max="10" step="1"><span>-log(probability)</span> <!-- keep span attached -->
+                                <input type="range" id="probability" value="5" min="0" max="9" step="1">
+                                <span class="slider-value" id="probability-value">5</span>
+                                <span>-log(probability)</span>
                             </label>
                         </div>
                     </div>
@@ -217,12 +220,14 @@
                     checked><span><div class=rotate>line_weight</div></span>
                 </label>
                 <label for="speed" class="material-icons" title="speed">
-                    <span class="slider-value" id="speed-value">0
-                    </span><input type="range" id="speed" value="0" min="-2" max="2"><span>slow_motion_video</span>
+                    <input type="range" id="speed" value="0" min="-2" max="2" step="0.1">
+                    <span class="slider-value" id="speed-value">0</span>
+                    <span>slow_motion_video</span>
                 </label>
                 <label for="zoom" class="material-icons" title="zoom">
-                    <span class="slider-value" id="zoom-value">0
-                    </span><input type="range" id="zoom" value="0" min="-10" max="10" step="1"><span>zoom_in</span>
+                    <input type="range" id="zoom" value="0" min="-10" max="10" step="0.1">
+                    <span class="slider-value" id="zoom-value">0</span>
+                    <span>zoom_in</span>
                 </label>
                 <br />
                 <label><i class="material-icons">crop_free</i>&nbsp;<sup id="dimensions">${ this.width }, ${ this.height }</sup></label>

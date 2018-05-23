@@ -42,7 +42,11 @@
     .slider-value {
         display: inline-block;
         min-width: 1rem;
+        margin-right: 1em;
         text-align: center;
+    }
+    .slider-value ~ span {
+        vertical-align: bottom;
     }
 
     .tabs {
